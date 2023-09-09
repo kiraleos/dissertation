@@ -4,44 +4,36 @@ subtitle: "Predicting Galaxy Redshifts Using Convolutional Neural Networks: A Co
 author: 
     - "Apostolos Kiraleos"
 abstract: "Galaxy redshift is a crucial parameter in astronomy that provides information on the distance, age, and evolution of galaxies. In this thesis, we explore the use of convolutional neural networks (CNNs)  for predicting galaxy redshifts from spectra, using data from the Gaia mission. We compare the performance of our CNN model with that of the Gaia Unresolved Galaxy Classifier (UGC), which uses support vector machines (SVMs) for classification."
-csl: "./acm.csl"
 linestretch: 1.25
 papersize: "a4"
 indent: true
-geometry: "left=3cm,right=3cm,top=3cm,bottom=3cm"
+geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
 fontsize: 12pt
 ---
 
-## 0 Table of Contents
+![Pandoc Logo](./code/graphs/cnn_vs_sdss_hist2d.png){width=80%}
 
-- [0 Table of Contents](#0-table-of-contents)
-- [1 Introduction](#1-introduction)
-  - [1.1 Gaia obvservatory](#11-gaia-obvservatory)
-  - [1.2 Galaxy redshift](#12-galaxy-redshift)
-  - [1.3 Convolutional Neural Networks](#13-convolutional-neural-networks)
-- [2 Our problem](#2-our-problem)
-
-## 1 Introduction
+## Chapter 1: Introduction
 
 ### 1.1 Gaia obvservatory
 
-The Gaia mission is a European Space Agency (ESA) space observatory that has been in operation since 2013. The primary goal of the mission is to create a three-dimensional map of our galaxy, the Milky Way, by measuring the positions, distances, and motions of over a billion stars.
+The Gaia mission is a European Space Agency (ESA) space observatory that has been in operation since 2013. The primary goal of the mission is to create a three-dimensional map of our galaxy, the Milky Way, by measuring the positions, distances, and motions of over two billion stars.
 
-The Gaia spacecraft is equipped with two telescopes that capture images of stars and other celestial objects, as well as a complex set of instruments that measure the brightness, color, and spectrum of these objects. The mission has already produced a wealth of data that has enabled significant advances in our understanding of the structure and evolution of the Milky Way.
+At its core, Gaia is equipped with two optical telescopes accompanied by three scientific instruments, which collaborate to accurately ascertain the positions and velocities of stars. Additionally, these instruments disperse the starlight into spectra, facilitating detailed analysis.
 
-In addition to its primary mission objectives, Gaia data is also being used for a wide range of scientific studies in fields such as exoplanet detection, galaxy evolution, and cosmology. One of the key applications of Gaia data is in the field of galaxy redshift estimation, which is the focus of this thesis.
+Throughout its mission, the spacecraft executes a deliberate rotation, systematically scanning the entire celestial sphere with its two telescopes. As the detectors continuously record the positions of celestial objects, they also capture the objects' movements within the cosmos, along with any alterations therein.
+
+Over the duration of its mission, Gaia conducts approximately 14 observations annually for each of its designated stars. Its primary objectives include the precise mapping of stellar positions, distances, motion patterns, and variations in luminosity. Gaia's mission anticipates the revelation of an extensive array of novel celestial entities, encompassing exoplanets and brown dwarfs, alongside the thorough examination of hundreds of thousands of asteroids located within our own Solar System. Furthermore, the mission encompasses an investigation into more than 1 million distant quasars while subjecting Albert Einstein's General Theory of Relativity to rigorous new assessments.
 
 ### 1.2 Galaxy redshift
 
 Galaxy redshift is a fundamental astronomical property that describes the relative motion of a galaxy with respect to Earth. The redshift of a galaxy is measured by analyzing the spectrum of light emitted by the galaxy, which appears to be shifted towards longer wavelengths due to the Doppler effect. Redshift is a crucial parameter in astronomy, as it provides information about the distance, velocity, and evolution of galaxies.
 
-The redshift of a galaxy is measured in units of "z", which is defined as the fractional shift in the wavelength of light emitted by the galaxy. Specifically, the redshift "z" is defined as:
+The redshift of a galaxy is measured in units of "$z$", which is defined as the fractional shift in the wavelength of light emitted by the galaxy. Specifically, the redshift "$z$" is defined as:
 
-```python
-z = (lambda_observed - lambda_emitted) / lambda_emitted
-```
+$$z = (\lambda_o - \lambda_e) / \lambda_e$$
 
-where `lambda_observed` is the observed wavelength of light from the galaxy, and `lambda_emitted` is the wavelength of that same light as emitted by the galaxy. A redshift of `z=0` corresponds to no shift in the wavelength (i.e., the observed and emitted wavelengths are the same), while a redshift of `z=1` corresponds to a shift of 100% in the wavelength (i.e., the observed wavelength is twice as long as the emitted wavelength).
+where $\lambda_o$ is the observed wavelength of light from the galaxy, and $\lambda_e$ is the wavelength of that same light as emitted by the galaxy. A redshift of $z=0$ corresponds to no shift in the wavelength (i.e., the observed and emitted wavelengths are the same), while a redshift of $z=1$ corresponds to a shift of 100% in the wavelength (i.e., the observed wavelength is twice as long as the emitted wavelength).
 
 Accurate and efficient estimation of galaxy redshift is therefore essential for a wide range of astronomical studies, including galaxy formation and evolution, large-scale structure of the universe, and dark matter distribution. However, measuring galaxy redshifts can be a challenging task due to various factors such as observational noise, instrumental effects, and variations in galaxy spectra.
 
@@ -61,4 +53,12 @@ The final layers of a CNN are typically fully connected layers, which take the o
 
 Overall, CNNs are a powerful and flexible tool for image analysis tasks, and have achieved state-of-the-art performance on many benchmark datasets. In this thesis, we explore the application of CNNs to galaxy redshift estimation, and compare their performance to traditional methods like the UGC classifier. We also investigate the use of transfer learning, data augmentation, and other techniques to improve the performance of CNNs on this task.
 
-## 2 Our problem
+### 1.4 Support Vector Machines
+
+Support Vector Machines (SVMs) are a class of supervised machine learning algorithms that excel in classification and regression tasks. Introduced by Vladimir Vapnik and his colleagues in the 1960s, SVMs have gained widespread popularity and are widely used in various fields, including image classification, text analysis, and bioinformatics.
+
+At their core, SVMs are based on the idea of finding a hyperplane that best separates data points belonging to different classes in a high-dimensional feature space. This hyperplane is chosen in such a way that it maximizes the margin, which is the distance between the hyperplane and the nearest data points from each class. These nearest data points are known as support vectors, hence the name "Support Vector Machines."
+
+SVMs are particularly well-suited for situations where the data is not linearly separable, meaning that a simple straight line (hyperplane) cannot cleanly divide the data into different classes. To address this, SVMs use a mathematical technique called the kernel trick. This allows SVMs to implicitly map the data into a higher-dimensional space where it becomes linearly separable. Common kernel functions include the linear, polynomial, radial basis function (RBF), and sigmoid kernels.
+
+## Chapter 2: Our problem
