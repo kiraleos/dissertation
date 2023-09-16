@@ -3,7 +3,7 @@ title: "Application of Machine Learning Methods on Astronomical Databases"
 author: 
     - "Apostolos Kiraleos"
 abstract: "Galaxy redshift is a crucial parameter in astronomy that provides information on the distance, age, and evolution of galaxies. This dissertation investigates the application of machine learning for predicting galaxy redshifts. It involves the development and training of a neural network to analyze galaxy spectra sourced from the European Space Agency's Gaia mission and showcases the practical implementation of machine learning in astronomy."
-linestretch: 1.25
+linestretch: 1.1
 papersize: "a4"
 indent: true
 geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
@@ -48,6 +48,6 @@ The key innovation of CNNs is their use of convolutional layers, which enable th
 
 CNNs typically also include pooling layers, which downsample the output of the previous layer by taking the maximum or average value within small local regions. This helps to reduce the dimensionality of the input and extract higher-level features from the local features learned in the previous convolutional layer.
 
-The final layers of a CNN are typically fully connected layers, which take the outputs of the previous convolutional and pooling layers and use them to make a prediction. In the case of image classification, for example, the output of the final fully connected layer might be a vector of probabilities indicating the likelihood of each possible class. In our case, instead of class probabilities, the output of the final fully connected layer will yield a single numeric value representing the predicted redshift of the observed galaxy.
+The final layers of a CNN are fully connected layers, which take the outputs of the previous convolutional and pooling layers and use them to make a prediction. In the case of image classification, for example, the output of the final fully connected layer might be a vector of probabilities indicating the likelihood of each possible class. In our case, instead of class probabilities, the output of the final fully connected layer will yield a single numeric value representing the predicted redshift of the observed galaxy.
 
 ### 1.4 Motivation and Objectives
