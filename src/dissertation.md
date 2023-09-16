@@ -20,11 +20,9 @@ fontsize: 12pt
 
 Galaxy redshift estimation is pivotal in astronomy, enabling us to grasp the universe's structure and evolution. It has broad applications, including cosmology, galaxy evolution, large-scale structure mapping, and exoplanet research. However, it can be resource-intensive and error-prone.
 
-This dissertation is driven by the practical need for precise galaxy redshift estimation in astronomy. The primary objective is to train a Convolutional Neural Network (CNN) using pre-processed galaxy spectra data.
+This dissertation is driven by the practical need for precise galaxy redshift estimation in astronomy. The primary objective is to train a Convolutional Neural Network (CNN) using pre-processed galaxy spectra data. The process includes data preparation, architecture design, and optimizing training parameters to ensure optimal performance.
 
-The main focus of this dissertation is the training of the neural network. This involves developing and training a CNN model using a high-quality dataset of galaxy spectra. The process includes data preparation, architecture design, and optimizing training parameters to ensure the best performance.
-
-Our aim is to evaluate the accuracy of the trained CNN in predicting galaxy redshifts. We will conduct a comprehensive evaluation using appropriate metrics and techniques to assess the model's performance, and also compare it against Gaia mission's Unresolved Galaxy Classifier (UGC) which is another machine learning approach to predicting galaxy redshifts using support vector machines (SVMs) instead of neural networks.
+Our aim is to evaluate the accuracy of the trained CNN in predicting galaxy redshifts. We will conduct a comprehensive evaluation using appropriate metrics and techniques to assess the model's performance. We also compare it against the Gaia mission's Unresolved Galaxy Classifier (UGC) which is another machine learning approach to predicting galaxy redshifts using support vector machines (SVMs) instead of neural networks.
 
 ### 1.2 Gaia space obvservatory
 
