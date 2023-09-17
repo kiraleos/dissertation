@@ -1,1 +1,1 @@
-pandoc -s .\src\dissertation.md -f markdown -t pdf -o .\out\dissertation.pdf --pdf-engine=pdflatex --toc -H ./src/disable_float.tex
+pandoc -s .\src\dissertation.md -f markdown -t pdf -o .\out\dissertation.pdf -H ./src/disable_float.tex
