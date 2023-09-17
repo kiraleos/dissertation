@@ -44,17 +44,12 @@ The contribution of this work lies in advancing knowledge within the field of ga
 
 The subsequent chapters of this dissertation are organized as follows:
 
-1. Introduction (the current chapter): Provides an overview of the dissertation's focus, objectives, methodology, and innovation.
-
-2. Background: Explores foundational concepts related to galaxy redshift estimation, including traditional methods and machine learning potential.
-
-3. Data Preparation: Details the process of selecting and cleaning galaxy spectra data for model training.
-
-4. Methodology: Elaborates on the methodologies used for CNN model training, evaluation, and comparison.
-
-5. Results and Discussion: Presents the findings of our experiments, assesses model performance, and discusses implications.
-
-6. Conclusion: Summarizes key takeaways and outlines potential areas for future research.
+1. **Introduction** (the current chapter): Provides an overview of the dissertation's focus, objectives, methodology, and innovation.
+2. **Background**: Explores foundational concepts related to galaxy redshift estimation, including traditional methods and machine learning potential.
+3. **Data Preparation**: Details the process of selecting and cleaning galaxy spectra data for model training.
+4. **Methodology**: Elaborates on the methodologies used for CNN model training, evaluation, and comparison.
+5. **Results and Discussion**: Presents the findings of our experiments, assesses model performance, and discusses implications.
+6. **Conclusion**: Summarizes key takeaways and outlines potential areas for future research.
 
 # Background
 
