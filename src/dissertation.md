@@ -3,7 +3,7 @@ title: "Application of Machine Learning Methods on Astronomical Databases"
 author: 
     - "Apostolos Kiraleos"
 abstract: "Galaxy redshift is a crucial parameter in astronomy that provides information on the distance, age, and evolution of galaxies. This dissertation investigates the application of machine learning for predicting galaxy redshifts. It involves the development and training of a neural network to analyze galaxy spectra sourced from the European Space Agency's Gaia mission and showcases the practical implementation of machine learning in astronomy."
-linestretch: 1.25
+# linestretch: 1.25
 papersize: "a4"
 indent: true
 numbersections: true
@@ -93,9 +93,13 @@ The final layers of a CNN are fully connected layers, which take the outputs of 
 
 ### Mechanism of operation
 
-Neural networks are trained using a process called backpropagation, which involves iteratively adjusting the weights of the network to minimize a loss function. The loss function measures the difference between the predicted output of the network and the actual output. By minimizing the loss function, the network learns to make more accurate predictions.
+Neural networks operate through a process known as backpropagation, a fundamental training algorithm that enables them to progressively refine their predictive capabilities. This iterative process involves adjusting the network's internal parameters, namely its weights and biases, to minimize a specified loss function. The loss function serves as a critical measure of the disparity between the network's predictions and the actual target values. By diminishing this loss, the neural network enhances its capacity to make increasingly accurate predictions.[^4]
 
-The weights of a neural network are adjusted using an algorithm called gradient descent, which involves computing the gradient of the loss function with respect to each weight. The gradient indicates the direction in which the loss function is decreasing the fastest, which is the direction in which the weight should be adjusted to minimize the loss function.
+The core of the backpropagation process hinges on an optimization technique known as gradient descent. Gradient descent, in essence, determines how the network's weights should be updated to minimize the loss function. To achieve this, it computes the gradient of the loss function with respect to each weight in the network. In other words, it calculates the rate of change of the loss concerning individual weights. This gradient offers crucial guidance, pointing the way toward the most rapid reduction in the loss function.
+
+As the gradient highlights the direction of steepest descent, it becomes the compass for the adjustment of weights. Weight updates are made proportionally to the gradient, ensuring that changes are made more significantly in areas where the loss function is decreasing most rapidly. This iterative process of calculating gradients and updating weights continues until the network converges to a state where the loss is minimized to the greatest extent possible.[^5]
+
+Incorporating the principles of backpropagation and gradient descent, neural networks steadily evolve their internal representations, allowing them to capture complex patterns and relationships within the data. This mechanism of operation serves as the foundation for their impressive ability to learn and generalize from data, making them valuable tools in a wide array of applications, from image recognition to galaxy redshift estimation.
 
 ### Loss functions
 
@@ -111,7 +115,7 @@ $$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y_i}|$$
 
 where $y_i$ is the actual output and $\hat{y_i}$ is the predicted output for the $i$th sample, and $n$ is the total number of samples.
 
-Another loss function that is commonly used in neural networks (and the one we end up using) is the huber loss function. It is less sensitive to outliers in data than the squared error loss. It's defined as:
+Another loss function that is commonly used in neural networks (and the one we end up using) is the Huber loss function. It is less sensitive to outliers in data than the squared error loss. It's defined as:
 
 $$L_{\delta} = \frac{1}{n} \sum_{i=1}^{n} \begin{cases} \frac{1}{2}(y_i - \hat{y_i})^2 & \text{if } |y_i - \hat{y_i}| \leq \delta \\ \delta |y_i - \hat{y_i}| - \frac{1}{2} \delta^2 & \text{otherwise} \end{cases}$$
 
@@ -119,41 +123,35 @@ where $\delta$ is a small constant.
 
 ### Activation functions
 
-Activation functions are mathematical functions that are applied to the output of each neuron in a neural network. They are used to introduce non-linearity into the network, which is essential for learning complex patterns and relationships in the data. The most common activation functions used in neural networks are the sigmoid, tanh, and ReLU functions. For *convolutional* neural networks, the ReLU function is typically used for all layers except the output layer, which uses a linear activation function.
+Activation functions are mathematical functions that are applied to the output of each neuron in a neural network. They are used to introduce non-linearity into the network, which is essential for learning complex patterns and relationships in the data. The most common activation functions used in neural networks are the sigmoid, tanh, and ReLU functions. For *convolutional* neural networks, the ReLU function is typically used for all layers except the output layer, which uses a linear activation function.[^9]
 
-The ReLU function is simply defined as:
+The sigmoid function is defined as:
 
-$$ReLU(x) = max(0, x)$$
+$$\sigma(x) = \frac{1}{1 + e^{-x}}$$
 
-where $x$ is the input to the function. The ReLU function is a piecewise linear function that returns the input if it is positive, and zero otherwise.
+where $x$ is the input to the function. The sigmoid function is a smooth, S-shaped function that returns a value between 0 and 1. It is commonly used in binary classification problems, where it is used to convert the output of the final layer to a probability between 0 and 1.[^10]
+
+The tanh function is defined as:
+
+$$tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
+
+where $x$ is the input to the function. The tanh function is a smooth, S-shaped function that returns a value between -1 and 1. It is similar to the sigmoid function, but it is zero-centered.[^11]
+
+Finally, the ReLU function is defined as:
+
+$$ReLU(x) = \begin{cases} 0 & \text{if } x < 0 \\ x & \text{otherwise} \end{cases}$$
+
+where $x$ is the input to the function. The ReLU function is a simple function that returns 0 if the input is negative, and the input itself if the input is positive.
 
 ### Optimizers
 
-Optimizers are algorithms that are used to adjust the weights of a neural network during training. They are used to minimize the loss function and improve the performance of the network. The most common optimizers used in CNNs are the stochastic gradient descent (SGD), Adam, and RMSprop optimizers.
+Optimizers serve as pivotal components in the training of neural networks, enabling the iterative adjustment of network weights to minimize the loss function and enhance overall performance. They play a crucial role in guiding the network's convergence toward optimal solutions. In the realm of CNNs, several optimizers are frequently employed to fine-tune model parameters. Notable among them are the stochastic gradient descent (SGD), Adam, and Adamax optimizers.
 
-The SGD optimizer is defined as:
+SGD is a foundational optimizer that forms the basis for many modern variants. It operates by updating weights in the direction that reduces the loss function. Although simple, SGD can be effective in optimizing neural networks, especially when coupled with proper learning rate schedules.[^7]
 
-$$w_{t+1} = w_t - \alpha \nabla L(w_t)$$
+The Adam optimizer, which stands for Adaptive Moment Estimation, is a powerful and widely adopted optimization algorithm. It combines the benefits of both momentum-based updates and adaptive learning rates. Adam maintains two moving averages for each weight, resulting in efficient and adaptive weight updates. This optimizer excels in handling non-stationary or noisy objective functions, making it a popular choice for training CNNs.[^8]
 
-The Adam optimizer is defined as:
-
-$$m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla L(w_t)$$
-
-$$v_t = \beta_2 v_{t-1} + (1 - \beta_2) \nabla L(w_t)^2$$
-
-$$\hat{m_t} = \frac{m_t}{1 - \beta_1^t}$$
-
-$$\hat{v_t} = \frac{v_t}{1 - \beta_2^t}$$
-
-$$w_{t+1} = w_t - \alpha \frac{\hat{m_t}}{\sqrt{\hat{v_t}} + \epsilon}$$
-
-The RMSprop optimizer is defined as:
-
-$$v_t = \beta v_{t-1} + (1 - \beta) \nabla L(w_t)^2$$
-
-$$w_{t+1} = w_t - \alpha \frac{\nabla L(w_t)}{\sqrt{v_t} + \epsilon}$$
-
-where $w_t$ is the weight at time $t$, $\alpha$ is the learning rate, $\beta_1$ and $\beta_2$ are the exponential decay rates for the first and second moments, respectively, and $\epsilon$ is a small constant to prevent division by zero.
+Adamax is an extension of the Adam optimizer that offers certain advantages in terms of computational efficiency. In our experiments, we found that Adamax yielded better results than Adam, which is why we ended up using it.
 
 # Data Preparation
 
@@ -165,15 +163,38 @@ The data used for this dissertation is a combination of the Sloan Digital Sky Su
 
 The dataset consists of 520.000 galaxy spectra, each with 186 data points. Each data point is the flux at a specific wavelength, ranging from 366 to 996 nanometers. The dataset also contains the redshift of each galaxy, ranging from 0 to 0.6 $z$ which is the target variable that we aim to predict.
 
+Here is a sample of the data (the first number is the redshift and the rest are the flux values at different wavelengths):
+
+$$0.1735581, 0.539, 0.514, 0.439, 0.34, 0.236, 0.134, 0.034 ...$$
+
 ## Preprocessing
 
-The only preprocessing step that was performed was to to apply a min-max normalization to the flux values, which rescales them to the range $[0, 1]$. Min-max normalization is a common practice in machine learning, particularly for neural networks. It standardizes the data, ensuring that all features are on the same scale. This not only aids in model convergence but also enhances training stability and performance.[^4] It is mathematically defined as:
+The only preprocessing step that was performed was to to apply a min-max normalization to the flux values, which rescales them to the range $[0, 1]$. Min-max normalization is a common practice in machine learning, particularly for neural networks. It standardizes the data, ensuring that all features are on the same scale. This not only aids in model convergence but also enhances training stability and performance.[^6] It is mathematically defined as:
 $$x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}$$
 where $x$ is the original data and $x_{min}$ and $x_{max}$ are the minimum and maximum values of $x$, respectively.
 
+We first loaded the data into a Pandas dataframe, then converted it to a numpy array, and finally used the `MinMaxScaler` class from the `sklearn.preprocessing` module to perform the normalization:
+
+```python
+data = pd.read_csv('./training_data.csv')
+spectra = np.array(data.iloc[:, 1:])
+redshifts = np.array(data.iloc[:, 0])
+
+min_max_scaler = MinMaxScaler()
+spectra = min_max_scaler.fit_transform(spectra)
+```
+
 ## Splitting
 
-The dataset was split into a training set, a validation set, and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. The training set was used to train the neural network, while the test set was used to evaluate the performance of the trained model. Of the training set, 30% was used as a validation set, which was used to evaluate the model during training and tune the model's hyperparameters. Hyperparameters will be explained in more detail in the next chapter.
+The dataset was split into a training set, a validation set, and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. The training set was used to train the neural network, while the test set was used to evaluate the performance of the trained model.
+
+Of the training set, 30% was used as a validation set, which was used to evaluate the model during training and tune the model's hyperparameters. Hyperparameters are parameters that are set before training and affect the training process, such as the learning rate and batch size.
+
+We use the `train_test_split` function from the `sklearn.model_selection` module to split the data:
+
+```python
+splitted_data = train_test_split(spectra, redshifts, test_size=0.1)
+```
 
 # Methodology
 
@@ -214,8 +235,40 @@ model = tf.keras.Sequential([
 ])
 ```
 
+## Training
+
+### Batch size
+
+The batch size constitutes a pivotal hyperparameter in the training process, influencing how the network learns from the data. It signifies the number of data samples that are processed in a single forward and backward pass during each training iteration. The choice of batch size carries significant implications for the network's training dynamics.
+
+Utilizing a larger batch size can expedite the training process, as more samples are processed in parallel. This can lead to faster convergence, especially on hardware optimized for parallel computations. However, there is a trade-off, as larger batch sizes can increase the risk of overfitting. The network might memorize the training data rather than learning to generalize from it.
+
+Conversely, a smaller batch size entails processing fewer samples at once. This can result in slower training progress, particularly on hardware with limited parallelism. However, smaller batch sizes often lead to better generalization, as the network receives a more diverse set of samples during training. It is less likely to memorize the training data and is more likely to extract meaningful patterns.[^12]
+
+In our experiments, we fine-tuned the batch size and discovered that a setting of 16 yielded the optimal balance between training efficiency and generalization performance.
+
+### Epochs
+
+Epochs refer to the number of times the entire training dataset is processed by the neural network. Each epoch represents a complete cycle through the dataset, during which the network updates its weights based on the observed errors. The choice of the number of epochs is another vital training hyperparameter.
+
+Training for too few epochs may result in an underfit model. In this scenario, the network has not had sufficient exposure to the data to learn complex patterns, and it may not perform well on unseen data.
+
+Conversely, training for an excessive number of epochs can lead to overfitting. The network may become too specialized in capturing the idiosyncrasies of the training data, diminishing its ability to generalize.
+
+Determining the ideal number of epochs involves a balance between achieving convergence and avoiding overfitting. Typically, researchers employ techniques like early stopping, which monitors validation performance and halts training when it starts to degrade, to guide epoch selection.
+
+In our experiments, we found through early stopping that training for 20 epochs yielded satisfactory results.
+
 ------------------------------------------------------------------------
 [^1]: "Gaia Overview". ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
 [^2]: "Redshift". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Redshift>
 [^3]: "Convolutional Neural Networks". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Convolutional_neural_network>
-[^4]: "Why Data should be Normalized before Training a Neural Network". Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
+[^4]: "Backpropagation". Wikipedia. September 27 2023. <https://www.wikiwand.com/en/Backpropagation>
+[^5]: "What is Gradient Descent?". IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
+[^6]: "Why Data should be Normalized before Training a Neural Network". Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
+[^7]: "Stochastic Gradient Descent (SGD)". GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
+[^8]: "Adam: A Method for Stochastic Optimization". arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
+[^9]: "Rectified Linear Units (ReLU) in Deep Learning". Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
+[^10]: "Activation Functions in Neural Networks". Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
+[^11]: "Activation Functions in Neural Networks". Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
+[^12]: "How to Control the Stability of Training Neural Networks With the Batch Size". Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
