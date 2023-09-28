@@ -63,9 +63,9 @@ Gaia is equipped with two optical telescopes accompanied by three scientific ins
 
 Throughout its mission, the spacecraft executes a deliberate rotation, systematically scanning the entire celestial sphere with its two telescopes. As the detectors continuously record the positions of celestial objects, they also capture the objects' movements within the galaxy, along with any alterations therein.
 
-During its mission, Gaia conducts approximately 14 observations each year for its designated stars. Its primary goals include accurately mapping the positions, distances, motions, and brightness variations of stars. Gaia's mission is expected to uncover various celestial objects, including exoplanets and brown dwarfs, and thoroughly study hundreds of thousands of asteroids within our Solar System. Additionally, the mission involves studying over 1 million distant quasars and conducting new assessments of Albert Einstein's General Theory of Relativity.[^1]
+During its mission, Gaia conducts approximately 14 observations each year for its designated stars. Its primary goals include accurately mapping the positions, distances, motions, and brightness variations of stars. Gaia's mission is expected to uncover various celestial objects, including exoplanets and brown dwarfs, and thoroughly study hundreds of thousands of asteroids within our Solar System. Additionally, the mission involves studying over 1 million distant quasars and conducting new assessments of Albert Einstein's General Theory of Relativity.[^gaia_overview]
 
-![ESA & Gaia mission logos[^16]](./figures/gaia_logo.png){width=50%}
+![ESA & Gaia mission logos[^gaia_logo]](./figures/gaia_logo.png){width=50%}
 
 ## Galaxy redshift
 
@@ -77,7 +77,7 @@ $$z = \frac{\lambda_{obsv} - \lambda_{emit}}{\lambda_{emit}}$$
 
 where $\lambda_{obsv}$ is the observed wavelength of light from the galaxy, and $\lambda_{emit}$ is the wavelength of that same light as emitted by the galaxy. A redshift of $z=0$ corresponds to no shift in the wavelength (i.e., the observed and emitted wavelengths are the same), while a redshift of $z=1$ corresponds to a shift of 100% in the wavelength (i.e., the observed wavelength is twice as long as the emitted wavelength).
 
-Accurate and efficient estimation of galaxy redshift is essential for a wide range of astronomical studies, including galaxy formation and evolution, large-scale structure of the universe, and dark matter distribution. However, measuring galaxy redshifts can be a challenging task due to various factors such as observational noise, instrumental effects, and variations in galaxy spectra.[^2]
+Accurate and efficient estimation of galaxy redshift is essential for a wide range of astronomical studies, including galaxy formation and evolution, large-scale structure of the universe, and dark matter distribution. However, measuring galaxy redshifts can be a challenging task due to various factors such as observational noise, instrumental effects, and variations in galaxy spectra.[^redshift]
 
 ## Artificial Intelligence
 
@@ -85,7 +85,7 @@ Artificial Intelligence, often abbreviated as AI, represents the culmination of 
 
 One of the defining features of AI is its adaptability—machines equipped with AI algorithms can analyze vast datasets, identify intricate patterns, and make decisions guided by these insights. This adaptability is particularly evident in the field of Machine Learning, a subset of AI that focuses on the development of algorithms capable of learning from data.
 
-![Venn diagram of Artificial Intelligence[^15]](./figures/ai_venn.png){width=50%}
+![Venn diagram of Artificial Intelligence[^ai_venn]](./figures/ai_venn.png){width=50%}
 
 ## Machine Learning
 
@@ -103,7 +103,7 @@ Hidden layers, as the name suggests, are intermediary layers that lie between th
 
 The output layer is responsible for producing the final result, whether it's a classification, prediction, or decision. The number of neurons in this layer corresponds to the desired number of output classes or the nature of the prediction task.
 
-![Visualization of an artificial neural network[^14]](./figures/neural_network.png){width=70%}
+![Visualization of an artificial neural network[^neural_network]](./figures/neural_network.png){width=70%}
 
 Inside every connection between neurons are numerical parameters known as weights and biases. These parameters are the essence of a neural network, as they determine the strength and significance of the connections between neurons.
 
@@ -123,11 +123,11 @@ where $y$ is the output of the neuron, $f$ is the activation function, $w_i$ is 
 
 The operation of an ANN is divided into two fundamental phases: the forward pass and the backward pass. During the forward pass, input data is propagated through the network from the input layer to the output layer. Each neuron processes its inputs, applies the activation function, and passes the result to the next layer.
 
-The backward pass, also known as backpropagation, is where the magic of learning happens. In this phase, the network compares its predictions with the actual outcomes, calculating the discrepancy between the two. It then propagates this error backward through the network, adjusting the weights and biases to minimize a specified loss function. The loss function serves as a measure of the error between the network's predictions and the actual target values. By diminishing this loss, the neural network enhances its capacity to make increasingly accurate predictions.[^4]
+The backward pass, also known as backpropagation, is where the magic of learning happens. In this phase, the network compares its predictions with the actual outcomes, calculating the discrepancy between the two. It then propagates this error backward through the network, adjusting the weights and biases to minimize a specified loss function. The loss function serves as a measure of the error between the network's predictions and the actual target values. By diminishing this loss, the neural network enhances its capacity to make increasingly accurate predictions.[^backpropagation]
 
 The backpropagation algorithm process depends on an optimization technique known as gradient descent. Gradient descent determines how the network's weights should be updated to minimize the loss function. To achieve this, it computes the gradient of the loss function with respect to each weight in the network. In other words, it calculates the rate of change of the loss concerning individual weights. This gradient offers crucial guidance, pointing the way toward the most rapid reduction in the loss function.
 
-As the gradient highlights the direction of steepest descent, it becomes the "compass" for the adjustment of weights. Weight updates are made proportionally to the gradient, ensuring that changes are made more significantly in areas where the loss function is decreasing most rapidly. This iterative process of calculating gradients and updating weights continues until the network converges to a state where the loss is minimized to the greatest extent possible.[^5]
+As the gradient highlights the direction of steepest descent, it becomes the "compass" for the adjustment of weights. Weight updates are made proportionally to the gradient, ensuring that changes are made more significantly in areas where the loss function is decreasing most rapidly. This iterative process of calculating gradients and updating weights continues until the network converges to a state where the loss is minimized to the greatest extent possible.[^gradient_descent]
 
 ### Convolutional Neural Networks
 
@@ -135,35 +135,35 @@ Convolutional neural networks (CNNs) are a specific type of ANN that has proven 
 
 The key differentiator of CNNs is their use of convolutional layers, which enable the network to automatically learn and extract local spatial features from raw input data. In a convolutional layer, each neuron is connected only to a small, localized region of the input data, known as the receptive field. By sharing weights across all neurons within a receptive field, the network can efficiently learn to detect local patterns and features, regardless of their location within the input image.
 
-![Neurons of a convolutional layer(right) connected to their receptive field (left)[^17]](./figures/receptive_field.png){width=50%}
+![Neurons of a convolutional layer(right) connected to their receptive field (left)[^receptive_field]](./figures/receptive_field.png){width=50%}
 
 CNNs typically also include pooling layers, which downsample the output of the previous layer by taking the maximum or average value within small local regions. This helps to reduce the dimensionality of the input and extract higher-level features from the local features learned in the previous convolutional layer.
 
-![Pooling layer with a 2x2 filter[^18]](./figures/max_pooling.png){width=60%}
+![Pooling layer with a 2x2 filter[^max_pooling]](./figures/max_pooling.png){width=60%}
 
-The final layers of a CNN are fully connected layers, which take the outputs of the previous convolutional and pooling layers and use them to make a prediction. In the case of image classification, for example, the output of the final fully connected layer might be a vector of probabilities indicating the likelihood of each possible class. In our case, instead of class probabilities, the output of the final fully connected layer will yield a single numeric value representing the predicted redshift of the observed galaxy.[^3]
+The final layers of a CNN are fully connected layers, which take the outputs of the previous convolutional and pooling layers and use them to make a prediction. In the case of image classification, for example, the output of the final fully connected layer might be a vector of probabilities indicating the likelihood of each possible class. In our case, instead of class probabilities, the output of the final fully connected layer will yield a single numeric value representing the predicted redshift of the observed galaxy.[^cnns]
 
-![Typical CNN architecture[^13]](./figures/cnn_architecture.png){width=90%}
+![Typical CNN architecture[^cnn_architecture]](./figures/cnn_architecture.png){width=90%}
 
 ### Activation functions
 
-Activation functions are mathematical functions that are applied to the output of each neuron in a neural network. They are used to introduce non-linearity into the network, which is essential for learning complex patterns and relationships in the data. The most common activation functions used in neural networks are the sigmoid, tanh, and ReLU functions. For *convolutional* neural networks, the ReLU function is typically used for all layers except the output layer, which uses a linear activation function.[^9]
+Activation functions are mathematical functions that are applied to the output of each neuron in a neural network. They are used to introduce non-linearity into the network, which is essential for learning complex patterns and relationships in the data. The most common activation functions used in neural networks are the sigmoid, tanh, and ReLU functions. For *convolutional* neural networks, the ReLU function is typically used for all layers except the output layer, which uses a linear activation function.[^relu_in_deep_learning]
 
 The sigmoid function is defined as:
 
 $$\sigma(x) = \frac{1}{1 + e^{-x}}$$
 
-where $x$ is the input to the function. The sigmoid function is a smooth, S-shaped function that returns a value between 0 and 1. It is commonly used in binary classification problems, where it is used to convert the output of the final layer to a probability between 0 and 1.[^10]
+where $x$ is the input to the function. The sigmoid function is a smooth, S-shaped function that returns a value between 0 and 1. It is commonly used in binary classification problems, where it is used to convert the output of the final layer to a probability between 0 and 1.[^activation_functions]
 
-![The sigmoid function[^19]](./figures/sigmoid.png){width=50%}
+![The sigmoid function[^sigmoid]](./figures/sigmoid.png){width=50%}
 
 The tanh function is defined as:
 
 $$tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
 
-where $x$ is the input to the function. The tanh function is also a smooth, S-shaped function that returns a value between -1 and 1. It is similar to the sigmoid function, but it is zero-centered.[^11]
+where $x$ is the input to the function. The tanh function is also a smooth, S-shaped function that returns a value between -1 and 1. It is similar to the sigmoid function, but it is zero-centered.[^activation_functions]
 
-![The tanh function[^20]](./figures/tanh.png){width=50%}
+![The tanh function[^tanh]](./figures/tanh.png){width=50%}
 
 Finally, the ReLU function is defined as:
 
@@ -171,7 +171,7 @@ $$ReLU(x) = \begin{cases} 0 & \text{if } x < 0 \\ x & \text{otherwise} \end{case
 
 where $x$ is the input to the function. The ReLU function is a simple function that returns 0 if the input is negative, and the input itself if the input is positive.
 
-![The ReLU function[^21]](./figures/relu.png){width=70%}
+![The ReLU function[^relu]](./figures/relu.png){width=70%}
 
 ### Loss functions
 
@@ -197,9 +197,9 @@ where $\delta$ is a small constant.
 
 Optimizers serve as pivotal components in the training of neural networks, enabling the iterative adjustment of network weights to minimize the loss function and enhance overall performance. They play a crucial role in guiding the network's convergence toward optimal solutions. In the realm of CNNs, several optimizers are frequently employed to fine-tune model parameters. Notable among them are the stochastic gradient descent (SGD), Adam, and Adamax optimizers.
 
-SGD is a foundational optimizer that forms the basis for many modern variants. It operates by updating weights in the direction that reduces the loss function. Although simple, SGD can be effective in optimizing neural networks, especially when coupled with proper learning rate schedules.[^7]
+SGD is a foundational optimizer that forms the basis for many modern variants. It operates by updating weights in the direction that reduces the loss function. Although simple, SGD can be effective in optimizing neural networks, especially when coupled with proper learning rate schedules.[^sgd]
 
-The Adam optimizer, which stands for Adaptive Moment Estimation, is a powerful and widely adopted optimization algorithm. It combines the benefits of both momentum-based updates and adaptive learning rates. Adam maintains two moving averages for each weight, resulting in efficient and adaptive weight updates. This optimizer excels in handling non-stationary or noisy objective functions, making it a popular choice for training CNNs.[^8]
+The Adam optimizer, which stands for Adaptive Moment Estimation, is a powerful and widely adopted optimization algorithm. It combines the benefits of both momentum-based updates and adaptive learning rates. Adam maintains two moving averages for each weight, resulting in efficient and adaptive weight updates. This optimizer excels in handling non-stationary or noisy objective functions, making it a popular choice for training CNNs.[^adam]
 
 Adamax is an extension of the Adam optimizer that offers certain advantages in terms of computational efficiency. In our experiments, we found that Adamax yielded better results than Adam, which is why we ended up using it.
 
@@ -219,7 +219,7 @@ $$0.1735581, 0.539, 0.514, 0.439, 0.34, 0.236, 0.134, 0.034 ...$$
 
 ## Preprocessing
 
-The only preprocessing step that was performed was to to apply a min-max normalization to the flux values, which rescales them to the range $[0, 1]$. Min-max normalization is a common practice in machine learning, particularly for neural networks. It standardizes the data, ensuring that all features are on the same scale. This not only aids in model convergence but also enhances training stability and performance.[^6] It is mathematically defined as:
+The only preprocessing step that was performed was to to apply a min-max normalization to the flux values, which rescales them to the range $[0, 1]$. Min-max normalization is a common practice in machine learning, particularly for neural networks. It standardizes the data, ensuring that all features are on the same scale. This not only aids in model convergence but also enhances training stability and performance.[^preprocessing] It is mathematically defined as:
 $$x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}$$
 where $x$ is the original data and $x_{min}$ and $x_{max}$ are the minimum and maximum values of $x$, respectively.
 
@@ -293,7 +293,7 @@ The batch size constitutes a pivotal hyperparameter in the training process, inf
 
 Utilizing a larger batch size can expedite the training process, as more samples are processed in parallel. This can lead to faster convergence, especially on hardware optimized for parallel computations. However, there is a trade-off, as larger batch sizes can increase the risk of overfitting. The network might memorize the training data rather than learning to generalize from it.
 
-Conversely, a smaller batch size entails processing fewer samples at once. This can result in slower training progress, particularly on hardware with limited parallelism. However, smaller batch sizes often lead to better generalization, as the network receives a more diverse set of samples during training. It is less likely to memorize the training data and is more likely to extract meaningful patterns.[^12]
+Conversely, a smaller batch size entails processing fewer samples at once. This can result in slower training progress, particularly on hardware with limited parallelism. However, smaller batch sizes often lead to better generalization, as the network receives a more diverse set of samples during training. It is less likely to memorize the training data and is more likely to extract meaningful patterns.[^batch_size]
 
 In our experiments, we fine-tuned the batch size and discovered that a setting of 16 yielded the optimal balance between training efficiency and generalization performance.
 
@@ -310,24 +310,21 @@ Determining the ideal number of epochs involves a balance between achieving conv
 In our experiments, we found through early stopping that training for 20 epochs yielded satisfactory results.
 
 ------------------------------------------------------------------------
-[^1]: "Gaia Overview". ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
-[^2]: "Redshift". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Redshift>
-[^3]: "Convolutional Neural Networks". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Convolutional_neural_network>
-[^4]: "Backpropagation". Wikipedia. September 27 2023. <https://www.wikipedia.com/en/Backpropagation>
-[^5]: "What is Gradient Descent?". IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
-[^6]: "Why Data should be Normalized before Training a Neural Network". Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
-[^7]: "Stochastic Gradient Descent (SGD)". GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
-[^8]: "Adam: A Method for Stochastic Optimization". arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
-[^9]: "Rectified Linear Units (ReLU) in Deep Learning". Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
-[^10]: "Activation Functions in Neural Networks". Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
-[^11]: "Activation Functions in Neural Networks". Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
-[^12]: "How to Control the Stability of Training Neural Networks With the Batch Size". Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
-[^13]: Phung, & Rhee,. (2019). "A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets". Applied Sciences. 9. 4500. 10.3390/app9214500.
-[^14]: Michael A. Nielsen. "Neural networks and Deep Learning". Determination Press. 2015
-[^15]: "Artificial Intelligence relation to Generative Models subset, Venn diagram". Wikimedia Commons. September 28 2023. <https://en.m.wikipedia.org/wiki/File:AI_relation_to_Generative_Models_subset,_venn_diagram.png>
-[^16]: ESA Gaia Science Community. ESA. September 28 2023. <https://www.cosmos.esa.int/documents/29201/0/Gaia_logo.png/62960d22-cdd9-02a2-c9d0-1bda19ab67cf?t=1607347628590>
-[^17]: "Input volume connected to a convolutional layer". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Conv_layer.png>
-[^18]: "Pooling layer with a 2x2 filter and stride = 2". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Max_pooling.png>
-[^19]: "Sigmoid function". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Logistic-curve.svg>
-[^20]: "Tanh function". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Hyperbolic_Tangent.svg>
-[^21]: "A Gentle Introduction to the Rectified Linear Unit (ReLU)". Jason Brownlee. Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
+[^gaia_overview]: "Gaia Overview". ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
+[^redshift]: "Redshift". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Redshift>
+[^cnns]: "Convolutional Neural Networks". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Convolutional_neural_network>
+[^backpropagation]: "Backpropagation". Wikipedia. September 27 2023. <https://www.wikipedia.com/en/Backpropagation>
+[^gradient_descent]: "What is Gradient Descent?". IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
+[^preprocessing]: "Why Data should be Normalized before Training a Neural Network". Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
+[^sgd]: "Stochastic Gradient Descent (SGD)". GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
+[^adam]: "Adam: A Method for Stochastic Optimization". arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
+[^relu_in_deep_learning]: "Rectified Linear Units (ReLU) in Deep Learning". Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
+[^activation_functions]: "Activation Functions in Neural Networks". Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
+[^batch_size]: "How to Control the Stability of Training Neural Networks With the Batch Size". Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
+[^cnn_architecture]: Phung, & Rhee,. (2019). "A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets". Applied Sciences. 9. 4500. 10.3390/app9214500.
+[^neural_network]: Michael A. Nielsen. "Neural networks and Deep Learning". Determination Press. 2015
+[^receptive_field]: "Input volume connected to a convolutional layer". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Conv_layer.png>
+[^max_pooling]: "Pooling layer with a 2x2 filter and stride = 2". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Max_pooling.png>
+[^sigmoid]: "Sigmoid function". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Logistic-curve.svg>
+[^tanh]: "Tanh function". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Hyperbolic_Tangent.svg>
+[^relu]: "A Gentle Introduction to the Rectified Linear Unit (ReLU)". Jason Brownlee. Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
