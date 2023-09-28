@@ -213,9 +213,13 @@ The data used for this dissertation is a combination of the Sloan Digital Sky Su
 
 The dataset consists of 520.000 galaxy spectra, each with 186 data points. Each data point is the flux at a specific wavelength, ranging from 366 to 996 nanometers. The dataset also contains the redshift of each galaxy, ranging from 0 to 0.6 $z$ which is the target variable that we aim to predict.
 
-Here is a sample of the data (the first number is the redshift and the rest are the flux values at different wavelengths):
+Below is a sample of the data, showing 3 random galaxies in the dataset. The first column is the redshift of the galaxy, and the remaining columns are the flux values at different wavelengths.
 
-$$0.1735581, 0.539, 0.514, 0.439, 0.34, 0.236, 0.134, 0.034 ...$$
+| z         | flux_0 | flux_1 | flux_2 | flux_3 | flux_4 |
+| --------- | ------ | ------ | ------ | ------ | ------ |
+| 0.1735581 | 0.539  | 0.514  | 0.439  | 0.034  | 0.224  |
+| 0.2647779 | -0.213 | -0.14  | 0.052  | 0.254  | 0.349  |
+| 0.1288678 | 0.394  | 0.329  | 0.287  | 0.265  | 0.262  |
 
 ## Preprocessing
 
