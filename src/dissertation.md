@@ -227,7 +227,7 @@ This table shows a sample of the dataset which includes 3 randomly selected gala
 
 ![Redshift distribution per bin of 0.01](./figures/redshift_distribution.png){width=85%}
 
-The figure above shows the distribution of the redshifts in the dataset. The distribution is not uniform, as the number of galaxies decreases dramatically as the redshift increases. The 99th percentile of the redshifts is approximately $0.37$, which means that *99%* of the galaxies have a redshift of $z \le 0.37$. As we will see later on, this will have an impact on the performance of the model in the redshifts of that range.
+The figure above shows the distribution of the redshifts in the dataset. The distribution is not normal, as the number of galaxies decreases dramatically as the redshift increases and the majority of the data is around the 0.1 redshift range. The 99th percentile of the redshifts is approximately $0.37$, which means that *99%* of the galaxies have a redshift of $z \le 0.37$. As we will see later on, this will have an impact on the performance of the model in the redshifts of that range.
 
 ![A randomly selected galaxy spectra](./figures/galaxy_spectra.png)
 
