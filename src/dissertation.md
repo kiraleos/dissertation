@@ -202,11 +202,13 @@ Adamax is an extension of the Adam optimizer that offers certain advantages in t
 
 ## Source & Composition
 
-N.B: The data collection and cleaning was already done by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC) and who generously provided us with the dataset. What follows is **their** process of obtaining it.[^ugc]
+*N.B: The data collection and cleaning was already done by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC) and who generously provided us with the dataset. What follows is **their** process of obtaining it.[^ugc]*
 
-The instances of the data set are selected galaxies with known redshifts. The target value is the redshift of the source galaxy or a specific value derived from it. The input data are the flux values of the sampled BP/RP (blue/red photometers, the instruments on board Gaia) spectrum of the galaxy[^bprp]. The edges of the BP spectrum are truncated by removing the first 34 and the last 6 samples, to avoid low signal-to-noise data. Similarly, the first 4 and the last 10 samples are removed from the RP spectrum. The "truncated" spectra are then concatenated to form the vector of 186 (80 BP + 106 RP) fluxes.
+The instances of the data set are selected galaxies with known redshifts. The target value is the redshift of the source galaxy or a specific value derived from it. The input data are the flux values of the sampled BP/RP (blue/red photometers, the instruments on board Gaia) spectrum of the galaxy[^bprp]. The edges of the BP spectrum are truncated by removing the first 34 and the last 6 samples, to avoid low signal-to-noise data. Similarly, the first 4 and the last 10 samples are removed from the RP spectrum. The "truncated" spectra are then concatenated to form the vector of 186 (80 BP + 106 RP) fluxes in the 366nm to 996nm wavelength range.
 
 The galaxies used for the dataset were selected from the Sloan Digital Sky Survey Data Release 16 (SDSS DR16) archive. Galaxies with bad or missing photometry, size, or redshift were rejected. The SDSS galaxies were cross-matched with the observed Gaia galaxies. The result was a dataset of SDSS galaxies that were also observed by Gaia. Due mainly to the photometric limit of the Gaia observations, most of the high-redshift galaxies ($z>1.0$) are absent. The high redshift regime is very sparsely populated and would lead to a very unbalanced training set. Thus, an upper limit of $z=0.6$ was imposed to the SDSS redshifts, rendering a total of 520.393 sources with $0 \le z \le 0.6$ forming the final dataset.
+
+## Analysis
 
 Below is a sample of the dataset which shows 3 randomly selected galaxies. The first column is the redshift $z$ of the galaxy, and the remaining columns are its first 5 flux values.
 
@@ -216,17 +218,45 @@ Below is a sample of the dataset which shows 3 randomly selected galaxies. The f
 | 0.2647779 | -0.213     | -0.14      | 0.052      | 0.254      | 0.349      |
 | 0.1288678 | 0.394      | 0.329      | 0.287      | 0.265      | 0.262      |
 
+The figure below shows the distribution of the redshifts in the dataset. The distribution is not uniform, as the number of galaxies decreases dramatically as the redshift increases. The 99th percentile of the redshifts is approximately $0.37$, which means that *99%* of the galaxies have a redshift of $z \le 0.37$. As we will see later on, this will have an impact on the performance of the model in the redshifts of that range.
+
+![Redshift distribution per bin of 0.01](./figures/redshift_distribution.png){width=85%}
+
+The figure below shows five randomly selected galaxy spectra. The x-axis represents the wavelength in nanometers, and the y-axis represents the flux values. The dip in the middle of the spectra is the point where the BP and RP spectra are concatenated.
+
+![Five randomly selected galaxy spectra](./figures/galaxy_spectra.png)
+
+This figure shows the average flux values for galaxy spectra within various redshift ranges.
+
+We split the redshifts into 6 ranges: $[0, 0.1)$, $[0.1, 0.2)$, $[0.2, 0.3)$, $[0.3, 0.4)$, $[0.4, 0.5)$, and $[0.5, 0.6]$. For each range, we calculated the average flux values of 1000 randomly chosen galaxies (or all available, if fewer than 1000 were in a range).
+
+The figure shows that the average flux values decrease as the redshift increases. This might also explain why our model performs worse on higher redshifts, as the flux values are "flatter".
+
+![Average flux values for galaxy spectra within various redshift ranges](./figures/average_flux.png)
+
 ## Preprocessing
 
-The only preprocessing step that was performed was to to apply a min-max normalization to the flux values, which rescales them to the range $[0, 1]$. Min-max normalization is a common practice in machine learning, particularly for neural networks. It standardizes the data, ensuring that all features are on the same scale. This not only aids in model convergence but also enhances training stability and performance.[^preprocessing] It is mathematically defined as:
+Data preprocessing is a crucial step in machine learning, as it can significantly impact the performance of a model. It involves transforming raw data into a format that is more suitable for machine learning algorithms. This process can include various steps, such as data cleaning, feature scaling and normalization, and data splitting.[^preprocessing]
+
+Feature scaling is a preprocessing step to standardize the range of independent variables or features in the dataset. It ensures that no single feature disproportionately influences the learning process. Common scaling techniques include min-max scaling, Z-score normalization, and robust scaling. Properly scaled features promote faster convergence and more stable training.
+
+On our dataset, as the data was already cleaned, the only preprocessing step we had to apply was min-max scaling to the flux values, which rescales them to the range $[0, 1]$. Other scaling techniques were also tested, but min-max scaling yielded the best results.
+
+It is mathematically defined as:
+
 $$x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}$$
+
 where $x$ is the original data and $x_{min}$ and $x_{max}$ are the minimum and maximum values of $x$, respectively.
 
 ## Splitting
 
-The dataset was split into a training set, a validation set, and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. The training set was used to train the neural network, while the test set was used to evaluate the performance of the trained model.
+Data is typically split into three sets: a training set, a validation set, and a test set. The training set is used to train the neural network, the validation set is used to fine-tune hyperparameters and monitor model performance during training, and the test set evaluates the model's performance on unseen data. This separation ensures that the model's performance metrics are reliable indicators of its generalization ability.
 
-Of the training set, 30% was used as a validation set, which was used to evaluate the model during training.
+Our dataset was first split into a training and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. Then of the training set, 30% was used as a validation set. This resulted in a training set of 63% of the data, a validation set of 27% of the data, and a test set of 10% of the data.
+
+This is not a common split, as the validation set is usually a smaller percentage of the original dataset. However, due to the large size of our dataset we decided to use a larger validation set because we could afford it.
+
+![Data split](./figures/data_split.png){width=100%}
 
 # Methodology
 
@@ -247,9 +277,6 @@ The Convolutional Neural Network (CNN) architecture chosen for this task is spec
 **Fully Connected (Dense) Layers**: Following the convolutional and pooling layers, fully connected layers are used for the final prediction. These layers gradually reduce the dimensionality of the features learned by previous layers, ultimately yielding a single numeric value: the predicted galaxy redshift.
 
 **Output Layer**: The output layer consists of a single neuron with a linear activation function. This neuron's output represents the predicted redshift of the observed galaxy. During training, this prediction is compared to the actual redshift to compute the loss, which guides the network's weight adjustments.
-\
-
-Below is the Keras code for the architecture. We used 4 convolutional layers each followed by a max-pooling layer, followed by 4 fully connected layers, and 1 output layer. The number of filters in each convolutional layer was 256, 256, 128, and 64, respectively. The kernel size of each convolutional layer was 5, 5, 3, and 2, respectively. The number of neurons in each fully connected layer was 256, 256, 128, and 64, respectively. We used the ReLU activation function for all layers except the output layer, which used a linear activation function. The decision to use these specific hyperparameters was based on known common practices and extensive experimentation.
 
 ## Training
 
