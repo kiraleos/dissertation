@@ -7,8 +7,9 @@ linestretch: 1.25
 papersize: "a4"
 indent: true
 numbersections: true
-geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+geometry: "left=3cm,right=3cm,top=3cm,bottom=3cm"
 fontsize: 12pt
+# mainfont: "Georgia"
 ---
 
 \newpage
@@ -24,23 +25,19 @@ fontsize: 12pt
 
 # Introduction
 
-## Object
+## Object, Purpose, and Objectives
 
 This dissertation primarily addresses the critical issue of accurate galaxy redshift estimation. Galaxy redshifts are pivotal in modern astronomy, providing crucial insights into cosmic distances, universe evolution, and more. The topic is of significant interest and relevance within the field.
 
-## Purpose and Objectives
-
 The main goal of this dissertation is to advance galaxy redshift estimation by applying advanced machine learning techniques, specifically Convolutional Neural Networks (CNNs). The objective is evaluating the performance and accuracy of a trained CNN model in predicting galaxy redshifts with the aim to understand the practical applications of this model in astronomical research.
+
+The contribution of this work lies in advancing knowledge within the field of galaxy redshift estimation. By applying state-of-the-art machine learning techniques, we aim to provide an innovative approach to predicting galaxy redshifts, potentially improving accuracy and efficiency in astronomy.
 
 ## Methodology
 
 The methodology of this dissertation involves designing, training, and evaluating the performance of a trained Convolutional Neural Network (CNN). The CNN is trained on a dataset of galaxy spectra sourced from the European Space Agency's Gaia mission which came already preprocessed and cleaned, ready for model training. The CNN is then trained on the dataset and evaluated on a test set of galaxy spectra.
 
 For the actual implementation of the CNN, the Python programming language was used, along with the Keras deep learning library.
-
-## Innovation
-
-The contribution of this work lies in advancing knowledge within the field of galaxy redshift estimation. By applying state-of-the-art machine learning techniques, we aim to provide an innovative approach to predicting galaxy redshifts, potentially improving accuracy and efficiency in astronomy.
 
 ## Structure
 
@@ -65,8 +62,6 @@ Throughout its mission, the spacecraft executes a deliberate rotation, systemati
 
 During its mission, Gaia conducts approximately 14 observations each year for its designated stars. Its primary goals include accurately mapping the positions, distances, motions, and brightness variations of stars. Gaia's mission is expected to uncover various celestial objects, including exoplanets and brown dwarfs, and thoroughly study hundreds of thousands of asteroids within our Solar System. Additionally, the mission involves studying over 1 million distant quasars and conducting new assessments of Albert Einstein's General Theory of Relativity.[^gaia_overview]
 
-![ESA & Gaia mission logos[^gaia_logo]](./figures/gaia_logo.png){width=50%}
-
 ## Galaxy redshift
 
 Galaxy redshift is a fundamental astronomical property that describes the relative motion of a galaxy with respect to Earth. The redshift of a galaxy is measured by analyzing the spectrum of light emitted by the galaxy, which appears to be shifted towards longer wavelengths due to the Doppler effect. Redshift is a crucial parameter in astronomy, as it provides information about the distance, velocity, and evolution of galaxies.
@@ -81,7 +76,7 @@ Accurate and efficient estimation of galaxy redshift is essential for a wide ran
 
 ## Artificial Intelligence
 
-Artificial Intelligence, often abbreviated as AI, represents the culmination of decades of research and development in the quest to imbue machines with human-like intelligence and decision-making capabilities. At its essence, AI aims to enable machines to emulate human cognitive functions such as learning, reasoning, problem-solving, and perception.
+Artificial Intelligence, commonly abbreviated as AI, signifies the result of extensive research and development spanning several decades, aimed at equipping machines with intelligence and decision-making abilities resembling those of humans.
 
 One of the defining features of AI is its adaptability—machines equipped with AI algorithms can analyze vast datasets, identify intricate patterns, and make decisions guided by these insights. This adaptability is particularly evident in the field of Machine Learning, a subset of AI that focuses on the development of algorithms capable of learning from data.
 
@@ -205,21 +200,21 @@ Adamax is an extension of the Adam optimizer that offers certain advantages in t
 
 # Data Preparation
 
-## Source
+## Source & Composition
 
-The data used for this dissertation is a combination of the Sloan Digital Sky Survey Data Release 16 (SDSS DR16) and the Gaia Data Release 3 (DR3) datasets. Combined, they form a dataset of galaxies with known redshifts and spectra.
+The data collection and cleaning was already done by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC) and generously provided us with the dataset. Below is *their* process of obtaining it.[^ugc_dataset]
 
-## Composition
+The instances of the data set are selected galaxies with known redshifts. The target value is the redshift of the source galaxy or a specific value derived from it. The input data are the flux values of the sampled BP/RP (blue/red photometers, the instruments on board Gaia) spectrum of the galaxy[^bprp]. The edges of the BP spectrum are truncated by removing the first 34 and the last 6 samples, to avoid low signal-to-noise data. Similarly, the first 4 and the last 10 samples are removed from the RP spectrum. The "truncated" spectra are then concatenated to form the vector of 186 (80 BP + 106 RP) fluxes.
 
-The dataset consists of 520.000 galaxy spectra, each with 186 data points. Each data point is the flux at a specific wavelength, ranging from 366 to 996 nanometers. The dataset also contains the redshift of each galaxy, ranging from 0 to 0.6 $z$ which is the target variable that we aim to predict.
+The galaxies used for the dataset were selected from the Sloan Digital Sky Survey Data Release 16 (SDSS DR16) archive. Galaxies with bad or missing photometry, size, or redshift were rejected. The SDSS galaxies were cross-matched with the observed Gaia galaxies. The result was a dataset of SDSS galaxies that were also observed by Gaia. Due mainly to the photometric limit of the Gaia observations, most of the high-redshift galaxies (z>1.0) are absent. The high redshift regime is very sparsely populated and would lead to a very unbalanced training set. Thus, an upper limit of z=0.6 was imposed to the SDSS redshifts, rendering a total of 520.393 sources with 0≤z≤0.6 forming the final dataset.
 
-Below is a sample of the data, showing 3 random galaxies in the dataset. The first column is the redshift of the galaxy, and the remaining columns are the flux values at different wavelengths.
+Below is a sample of the dataset which shows 3 randomly selected galaxies. The first column is the redshift $z$ of the galaxy, and the remaining columns are its first 5 flux values.
 
-| z         | flux_0 | flux_1 | flux_2 | flux_3 | flux_4 |
-| --------- | ------ | ------ | ------ | ------ | ------ |
-| 0.1735581 | 0.539  | 0.514  | 0.439  | 0.034  | 0.224  |
-| 0.2647779 | -0.213 | -0.14  | 0.052  | 0.254  | 0.349  |
-| 0.1288678 | 0.394  | 0.329  | 0.287  | 0.265  | 0.262  |
+| $z$       | $flux_{0}$ | $flux_{1}$ | $flux_{2}$ | $flux_{3}$ | $flux_{4}$ |
+| --------- | ---------- | ---------- | ---------- | ---------- | ---------- |
+| 0.1735581 | 0.539      | 0.514      | 0.439      | 0.034      | 0.224      |
+| 0.2647779 | -0.213     | -0.14      | 0.052      | 0.254      | 0.349      |
+| 0.1288678 | 0.394      | 0.329      | 0.287      | 0.265      | 0.262      |
 
 ## Preprocessing
 
@@ -242,7 +237,7 @@ spectra = min_max_scaler.fit_transform(spectra)
 
 The dataset was split into a training set, a validation set, and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. The training set was used to train the neural network, while the test set was used to evaluate the performance of the trained model.
 
-Of the training set, 30% was used as a validation set, which was used to evaluate the model during training and tune the model's hyperparameters. Hyperparameters are parameters that are set before training and affect the training process, such as the learning rate and batch size.
+Of the training set, 30% was used as a validation set, which was used to evaluate the model during training.
 
 We use the `train_test_split` function from the `sklearn.model_selection` module to split the data:
 
@@ -251,6 +246,10 @@ splitted_data = train_test_split(spectra, redshifts, test_size=0.1)
 ```
 
 # Methodology
+
+## Hyperparameter Optimization
+
+Hyperparameters are the knobs and levers of a machine learning model. While regular parameters are learned from the training data (e.g., the weights in a neural network), hyperparameters are predefined settings that dictate how a model learns. These settings influence various aspects of the learning process, including the learning rate, the number of hidden layers and their units, the batch size, etc.
 
 ## Network architecture
 
@@ -314,21 +313,24 @@ Determining the ideal number of epochs involves a balance between achieving conv
 In our experiments, we found through early stopping that training for 20 epochs yielded satisfactory results.
 
 ------------------------------------------------------------------------
-[^gaia_overview]: "Gaia Overview". ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
-[^redshift]: "Redshift". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Redshift>
-[^cnns]: "Convolutional Neural Networks". Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Convolutional_neural_network>
-[^backpropagation]: "Backpropagation". Wikipedia. September 27 2023. <https://www.wikipedia.com/en/Backpropagation>
-[^gradient_descent]: "What is Gradient Descent?". IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
-[^preprocessing]: "Why Data should be Normalized before Training a Neural Network". Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
-[^sgd]: "Stochastic Gradient Descent (SGD)". GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
-[^adam]: "Adam: A Method for Stochastic Optimization". arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
-[^relu_in_deep_learning]: "Rectified Linear Units (ReLU) in Deep Learning". Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
-[^activation_functions]: "Activation Functions in Neural Networks". Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
-[^batch_size]: "How to Control the Stability of Training Neural Networks With the Batch Size". Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
-[^cnn_architecture]: Phung, & Rhee,. (2019). "A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets". Applied Sciences. 9. 4500. 10.3390/app9214500.
-[^neural_network]: Michael A. Nielsen. "Neural networks and Deep Learning". Determination Press. 2015
-[^receptive_field]: "Input volume connected to a convolutional layer". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Conv_layer.png>
-[^max_pooling]: "Pooling layer with a 2x2 filter and stride = 2". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Max_pooling.png>
-[^sigmoid]: "Sigmoid function". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Logistic-curve.svg>
-[^tanh]: "Tanh function". Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Hyperbolic_Tangent.svg>
-[^relu]: "A Gentle Introduction to the Rectified Linear Unit (ReLU)". Jason Brownlee. Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
+[^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
+[^redshift]: Redshift. Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Redshift>
+[^ai_venn]: Artificial Intelligence relation to Generative Models subset, Venn diagram. Wikipedia. September 28 2023. <https://en.wikipedia.org/wiki/File:Artificial_Intelligence_relation_to_Generative_Models_subset,_Venn_diagram.png>
+[^cnns]: Convolutional Neural Networks. Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Convolutional_neural_network>
+[^backpropagation]: Backpropagation. Wikipedia. September 27 2023. <https://www.wikipedia.com/en/Backpropagation>
+[^gradient_descent]: What is Gradient Descent?. IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
+[^preprocessing]: Why Data should be Normalized before Training a Neural Network. Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
+[^sgd]: Stochastic Gradient Descent (SGD). GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
+[^adam]: Adam: A Method for Stochastic Optimization. arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
+[^relu_in_deep_learning]: Rectified Linear Units (ReLU) in Deep Learning. Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
+[^activation_functions]: Activation Functions in Neural Networks. Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
+[^batch_size]: How to Control the Stability of Training Neural Networks With the Batch Size. Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
+[^cnn_architecture]: Phung, & Rhee,. (2019). A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Applied Sciences. 9. 4500. 10.3390/app9214500.
+[^neural_network]: Michael A. Nielsen. Neural networks and Deep Learning. Determination Press. 2015
+[^receptive_field]: Input volume connected to a convolutional layer. Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Conv_layer.png>
+[^max_pooling]: Pooling layer with a 2x2 filter and stride = 2. Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Max_pooling.png>
+[^sigmoid]: Sigmoid function. Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Logistic-curve.svg>
+[^tanh]: Tanh function. Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Hyperbolic_Tangent.svg>
+[^relu]: Jason Brownlee. A Gentle Introduction to the Rectified Linear Unit (ReLU). Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
+[^bprp]: René Andrae. Sampled Mean Spectrum generator (SMSgen). Gaia Archive. September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_smsgen.html>
+[^ugc_dataset] Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
