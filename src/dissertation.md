@@ -216,22 +216,22 @@ The galaxies used for the dataset were selected from the Sloan Digital Sky Surve
 
 The following section provides an overview of the dataset used for training the CNN model. It includes a sample of the data and a brief data analysis of the data's distribution and characteristics.
 
-| $z$       | $flux_{0}$ | $flux_{1}$ | $flux_{2}$ | $flux_{3}$ | $flux_{4}$ |
-| --------- | ---------- | ---------- | ---------- | ---------- | ---------- |
-| 0.1735581 | 0.539      | 0.514      | 0.439      | 0.034      | 0.224      |
-| 0.2647779 | -0.213     | -0.14      | 0.052      | 0.254      | 0.349      |
-| 0.1288678 | 0.394      | 0.329      | 0.287      | 0.265      | 0.262      |
+| $z$       | $flux_{0}$ | $flux_{1}$ | $flux_{2}$ | ... | $flux_{183}$ | $flux_{184}$ | $flux_{185}$ |
+| --------- | ---------- | ---------- | ---------- | --- | ------------ | ------------ | ------------ |
+| 0.1735581 | 0.539      | 0.514      | 0.439      | ... | 2.909        | 2.705        | 2.386        |
+| 0.2647779 | -0.213     | -0.14      | 0.052      | ... | 13.063       | 12.639       | 12.429       |
+| 0.1288678 | 0.394      | 0.329      | 0.287      | ... | 5.484        | 5.281        | 5.123        |
 Table: Three randomly selected galaxies from the dataset.
 
-This table shows a sample of the dataset which includes 3 randomly selected galaxies. The first column is the redshift $z$ of the galaxy, and the remaining columns are its first 5 flux values.
+This table shows a sample of the dataset which includes 3 randomly selected galaxies. The first column is the redshift $z$ of the galaxy, and the remaining columns are its first and last 3 flux values.
 
 ![Redshift distribution per bin of 0.01](./figures/redshift_distribution.png){width=85%}
 
 The figure above shows the distribution of the redshifts in the dataset. The distribution is not uniform, as the number of galaxies decreases dramatically as the redshift increases. The 99th percentile of the redshifts is approximately $0.37$, which means that *99%* of the galaxies have a redshift of $z \le 0.37$. As we will see later on, this will have an impact on the performance of the model in the redshifts of that range.
 
-![Five randomly selected galaxy spectra](./figures/galaxy_spectra.png)
+![A randomly selected galaxy spectra](./figures/galaxy_spectra.png)
 
-This figure shows five randomly selected galaxy spectra. The x-axis represents the wavelength in nanometers, and the y-axis represents the flux values. The dip in the middle of the spectra is the point where the BP and RP spectra are concatenated.
+This figure shows a randomly selected galaxy spectra. The x-axis represents the wavelength in nanometers, and the y-axis represents the flux. The dip in the middle of the spectrum is the point where the BP and RP spectra are concatenated.
 
 ![Average flux values for galaxy spectra within various redshift ranges](./figures/average_flux.png)
 
