@@ -202,11 +202,11 @@ Adamax is an extension of the Adam optimizer that offers certain advantages in t
 
 ## Source & Composition
 
-The data collection and cleaning was already done by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC) and generously provided us with the dataset. Below is *their* process of obtaining it.[^ugc_dataset]
+*N.B: The data collection and cleaning was already done by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC) and who generously provided us with the dataset. What follows is **their** process of obtaining it.[^ugc]*
 
 The instances of the data set are selected galaxies with known redshifts. The target value is the redshift of the source galaxy or a specific value derived from it. The input data are the flux values of the sampled BP/RP (blue/red photometers, the instruments on board Gaia) spectrum of the galaxy[^bprp]. The edges of the BP spectrum are truncated by removing the first 34 and the last 6 samples, to avoid low signal-to-noise data. Similarly, the first 4 and the last 10 samples are removed from the RP spectrum. The "truncated" spectra are then concatenated to form the vector of 186 (80 BP + 106 RP) fluxes.
 
-The galaxies used for the dataset were selected from the Sloan Digital Sky Survey Data Release 16 (SDSS DR16) archive. Galaxies with bad or missing photometry, size, or redshift were rejected. The SDSS galaxies were cross-matched with the observed Gaia galaxies. The result was a dataset of SDSS galaxies that were also observed by Gaia. Due mainly to the photometric limit of the Gaia observations, most of the high-redshift galaxies (z>1.0) are absent. The high redshift regime is very sparsely populated and would lead to a very unbalanced training set. Thus, an upper limit of z=0.6 was imposed to the SDSS redshifts, rendering a total of 520.393 sources with 0≤z≤0.6 forming the final dataset.
+The galaxies used for the dataset were selected from the Sloan Digital Sky Survey Data Release 16 (SDSS DR16) archive. Galaxies with bad or missing photometry, size, or redshift were rejected. The SDSS galaxies were cross-matched with the observed Gaia galaxies. The result was a dataset of SDSS galaxies that were also observed by Gaia. Due mainly to the photometric limit of the Gaia observations, most of the high-redshift galaxies ($z>1.0$) are absent. The high redshift regime is very sparsely populated and would lead to a very unbalanced training set. Thus, an upper limit of $z=0.6$ was imposed to the SDSS redshifts, rendering a total of 520.393 sources with $0 \le z \le 0.6$ forming the final dataset.
 
 Below is a sample of the dataset which shows 3 randomly selected galaxies. The first column is the redshift $z$ of the galaxy, and the remaining columns are its first 5 flux values.
 
@@ -222,28 +222,11 @@ The only preprocessing step that was performed was to to apply a min-max normali
 $$x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}$$
 where $x$ is the original data and $x_{min}$ and $x_{max}$ are the minimum and maximum values of $x$, respectively.
 
-We first loaded the data into a Pandas dataframe, then converted it to a numpy array, and finally used the `MinMaxScaler` class from the `sklearn.preprocessing` module to perform the normalization:
-
-```python
-data = pd.read_csv('./training_data.csv')
-spectra = np.array(data.iloc[:, 1:])
-redshifts = np.array(data.iloc[:, 0])
-
-min_max_scaler = MinMaxScaler()
-spectra = min_max_scaler.fit_transform(spectra)
-```
-
 ## Splitting
 
 The dataset was split into a training set, a validation set, and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. The training set was used to train the neural network, while the test set was used to evaluate the performance of the trained model.
 
 Of the training set, 30% was used as a validation set, which was used to evaluate the model during training.
-
-We use the `train_test_split` function from the `sklearn.model_selection` module to split the data:
-
-```python
-splitted_data = train_test_split(spectra, redshifts, test_size=0.1)
-```
 
 # Methodology
 
@@ -267,26 +250,6 @@ The Convolutional Neural Network (CNN) architecture chosen for this task is spec
 \
 
 Below is the Keras code for the architecture. We used 4 convolutional layers each followed by a max-pooling layer, followed by 4 fully connected layers, and 1 output layer. The number of filters in each convolutional layer was 256, 256, 128, and 64, respectively. The kernel size of each convolutional layer was 5, 5, 3, and 2, respectively. The number of neurons in each fully connected layer was 256, 256, 128, and 64, respectively. We used the ReLU activation function for all layers except the output layer, which used a linear activation function. The decision to use these specific hyperparameters was based on known common practices and extensive experimentation.
-
-```python
-model = tf.keras.Sequential([
-    tf.keras.layers.InputLayer(input_shape=(186, 1)),
-    tf.keras.layers.Conv1D(filters=256, kernel_size=5, activation='relu'),
-    tf.keras.layers.MaxPooling1D(),
-    tf.keras.layers.Conv1D(filters=256, kernel_size=5, activation='relu'),
-    tf.keras.layers.MaxPooling1D(),
-    tf.keras.layers.Conv1D(filters=128, kernel_size=3, activation='relu'),
-    tf.keras.layers.MaxPooling1D(),
-    tf.keras.layers.Conv1D(filters=64, kernel_size=2, activation='relu'),
-    tf.keras.layers.MaxPooling1D(),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(units=256, activation='relu'),
-    tf.keras.layers.Dense(units=256, activation='relu'),
-    tf.keras.layers.Dense(units=128, activation='relu'),
-    tf.keras.layers.Dense(units=64, activation='relu'),
-    tf.keras.layers.Dense(units=1, activation='linear')
-])
-```
 
 ## Training
 
@@ -333,4 +296,4 @@ In our experiments, we found through early stopping that training for 20 epochs 
 [^tanh]: Tanh function. Wikipedia Commons. September 28 2023. <https://en.wikipedia.org/wiki/File:Hyperbolic_Tangent.svg>
 [^relu]: Jason Brownlee. A Gentle Introduction to the Rectified Linear Unit (ReLU). Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
 [^bprp]: René Andrae. Sampled Mean Spectrum generator (SMSgen). Gaia Archive. September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_smsgen.html>
-[^ugc_dataset] Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
+[^ugc]: Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
