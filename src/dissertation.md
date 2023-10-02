@@ -186,7 +186,7 @@ $$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y_i}|$$
 
 where $y_i$ is the actual output and $\hat{y_i}$ is the predicted output for the $i$th sample, and $n$ is the total number of samples.
 
-Another loss function that is commonly used in neural networks (and the one we end up using) is the Huber loss function. It is less sensitive to outliers in data than the squared error loss. It's defined as:
+Another loss function that is commonly used in neural networks is the Huber loss function. It is less sensitive to outliers in data than the squared error loss. It's defined as:
 
 $$L_{\delta} = \frac{1}{n} \sum_{i=1}^{n} \begin{cases} \frac{1}{2}(y_i - \hat{y_i})^2 & \text{if } |y_i - \hat{y_i}| \leq \delta \\ \delta |y_i - \hat{y_i}| - \frac{1}{2} \delta^2 & \text{otherwise} \end{cases}$$
 
@@ -200,7 +200,25 @@ SGD is a foundational optimizer that forms the basis for many modern variants. I
 
 The Adam optimizer, which stands for Adaptive Moment Estimation, is a powerful and widely adopted optimization algorithm. It combines the benefits of both momentum-based updates and adaptive learning rates. Adam maintains two moving averages for each weight, resulting in efficient and adaptive weight updates. This optimizer excels in handling non-stationary or noisy objective functions, making it a popular choice for training CNNs.[^adam]
 
-Adamax is an extension of the Adam optimizer that offers certain advantages in terms of computational efficiency. In our experiments, we found that Adamax yielded better results than Adam, which is why we ended up using it.
+Adamax is an extension of the Adam optimizer that offers certain advantages in terms of computational efficiency.
+
+### Batch size
+
+The batch size is a parameter in the training phase of a neural network. It signifies the number of data samples that are processed in a single forward and backward pass during each training iteration. The choice of batch size carries significant implications for the network's training dynamics.
+
+Utilizing a larger batch size can expedite the training process, as more samples are processed in parallel. This can lead to faster convergence, especially on hardware optimized for parallel computations. However, there is a trade-off, as larger batch sizes can increase the risk of overfitting. The network might memorize the training data rather than learning to generalize from it.
+
+Conversely, a smaller batch size entails processing fewer samples at once. This can result in slower training progress, particularly on hardware with limited parallelism. However, smaller batch sizes often lead to better generalization, as the network receives a more diverse set of samples during training. It is less likely to memorize the training data and is more likely to extract meaningful patterns.[^batch_size]
+
+### Epochs
+
+Epochs refer to the number of times the entire training dataset is processed by the neural network. Each epoch represents a complete cycle through the dataset, during which the network updates its weights based on the observed errors. The choice of the number of epochs is another vital training hyperparameter.
+
+Training for too few epochs may result in an underfit model. In this scenario, the network has not had sufficient exposure to the data to learn complex patterns, and it may not perform well on unseen data.
+
+Conversely, training for an excessive number of epochs can lead to overfitting. The network may become too specialized in capturing the idiosyncrasies of the training data, diminishing its ability to generalize.
+
+Determining the ideal number of epochs involves a balance between achieving convergence and avoiding overfitting. Typically, researchers employ techniques like early stopping, which monitors validation performance and halts training when it starts to degrade, to guide epoch selection.
 
 # Data Preparation
 
@@ -227,7 +245,9 @@ This table shows a sample of the dataset which includes 3 randomly selected gala
 
 ![Redshift distribution per bin of 0.01](./figures/redshift_distribution.png){width=85%}
 
-The figure above shows the distribution of the redshifts in the dataset. The distribution is not normal, as the number of galaxies decreases dramatically as the redshift increases and the majority of the data is around the 0.1 redshift range. The 99th percentile of the redshifts is approximately $0.37$, which means that *99%* of the galaxies have a redshift of $z \le 0.37$. As we will see later on, this will have an impact on the performance of the model in the redshifts of that range.
+The figure above shows the distribution of the redshifts in the dataset. The x-axis represents the redshift, and the y-axis represents the number of galaxies in the dataset with that redshift. The redshifts are split into bins of 0.01, and the number of galaxies in each bin is plotted. The figure shows that the redshifts are not uniformly distributed, but instead, they follow a highly skewed (skewness of $1.094$) normal distribution. The mean of the redshifts is $0.142$, the median $0.126$ and the standard deviation is $0.079$.
+
+The 99th percentile of the redshifts is approximately $0.37$, which means that *99%* of the galaxies have a redshift of $z \le 0.37$. As we will see later on, this will have an impact on the performance of the model in the redshifts of that range.
 
 ![A randomly selected galaxy spectra](./figures/galaxy_spectra.png)
 
@@ -247,7 +267,7 @@ Data preprocessing is a crucial step in machine learning, as it can significantl
 
 Feature scaling is a preprocessing step to standardize the range of independent variables or features in the dataset. It ensures that no single feature disproportionately influences the learning process. Common scaling techniques include min-max scaling, Z-score normalization, and robust scaling. Properly scaled features promote faster convergence and more stable training.
 
-On our dataset, as the data was already cleaned, the only preprocessing step we had to apply was min-max scaling to the flux values, which rescales them to the range $[0, 1]$. Other scaling techniques were also tested, but min-max scaling yielded the best results.
+On our dataset, since the data was already cleaned, the only preprocessing step we had to apply was min-max scaling to the flux values, which rescales them to the range $[0, 1]$. Other scaling techniques were also tested, but min-max scaling yielded the best results.
 
 It is mathematically defined as:
 
@@ -261,53 +281,61 @@ Data is typically split into three sets: a training set, a validation set, and a
 
 Our dataset was first split into a training and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. Then of the training set, 30% was used as a validation set. This resulted in a training set of 63% of the data, a validation set of 27% of the data, and a test set of 10% of the data.
 
-This is not a common split, as the validation set is usually a smaller percentage of the original dataset. However, due to the large size of our dataset we decided to use a larger validation set because we could afford it.
-
 ![Data split](./figures/data_split.png){width=100%}
 
 # Methodology
+
+## Why convolutional neural networks?
+
+The basis of the decision to use a convolutional neural network is within the nature of the input data. Galaxy spectra, represented as a one dimensional array of flux values have similar characteristics to those of images. It is essentially a one dimensional image, where each "pixel", or, flux at a particular wavelength is correlated with its neighbours. One could thing of this problem as trying to predict the frequency (or wavelength) of a sine wave.
+
+Convolutional neural networks excel at capturing local patterns within data. Unlike traditional neural networks that treat each data point independently, CNNs use convolutional layers to slide over the input, extracting relevant features through a receptive field.
+
+Another significant advantage of CNNs is their ability to perform dimensionality reduction effectively. By applying convolutional and pooling layers, these networks reduce the length of the input while retaining essential features. This is particularly advantageous when working with one dimensional arrays, as it helps in condensing the spectral information while simultaneously preserving the most critical spectral features.
 
 ## Hyperparameter Optimization
 
 Hyperparameters are the knobs and levers of a machine learning model. While regular parameters are learned from the training data (e.g., the weights in a neural network), hyperparameters are predefined settings that dictate how a model learns. These settings influence various aspects of the learning process, including the learning rate, the number of hidden layers and their units, the batch size, etc.
 
-## Network architecture
+### Methodologies of Optimization
 
-The Convolutional Neural Network (CNN) architecture chosen for this task is specifically tailored to handle the spectral data obtained from the Gaia mission. Unlike traditional image-based CNNs, which analyze two-dimensional images, this architecture is designed to work with one-dimensional spectra.
+Hyperparameter optimization involves exploring various combinations of hyperparameters to find the optimal configuration. Several methods exist for this, including grid search, random search, and Bayesian optimization.
 
-**Input Layer**: The input layer accepts the normalized galaxy spectra. Each spectrum, represented as a 1D array of flux values at different wavelengths, is fed into the network. The input layer's size is determined by the number of data points in each spectrum.
+The traditional way of performing hyperparameter optimization has been grid search, which is simply an exhaustive searching through a manually specified subset of the hyperparameter space of a model.
 
-**Convolutional Layers**: These layers are responsible for feature extraction. Convolutional filters slide over the input spectra, capturing local patterns and features at different scales. Given the varying nature of spectral data, multiple convolutional layers with different filter sizes are used to capture both fine-grained and broader features. This adaptability is essential since galaxy spectra can exhibit a wide range of shapes and characteristics.
+Secondly, random search simply selects hyperparameters randomly. While it might not explore every combination, it often reaches near-optimal configurations faster than grid search, especially when only a small number of hyperparameters affects the final performance of the model.[^grid_search]
 
-**Pooling Layers**: After each convolutional layer, a pooling layer follows. Max-pooling is applied to reduce the spatial dimensionality of the feature maps, retaining the most important features. Pooling helps in managing the computational complexity of the network while preserving crucial information.
+Finally, Bayesian optimization employs probabilistic models to guide the search efficiently. It smartly explores the space of potential choices of hyperparameters by deciding which combination to explore next based on previous observations. This makes it more efficient than random *and* grid search, as it can reach near-optimal configurations faster.[^bayesian] For this reason, and since Keras provides a simple API for it, Bayesian optimization was chosen for hyperparameter optimization.
 
-**Fully Connected (Dense) Layers**: Following the convolutional and pooling layers, fully connected layers are used for the final prediction. These layers gradually reduce the dimensionality of the features learned by previous layers, ultimately yielding a single numeric value: the predicted galaxy redshift.
+The search space of hyperparameters was chosen as: the number of convolutional layers, the number of filters in each convolutional layer, the kernel size of each convolutional layer, the number of dense layers, the number of units in each dense layer, their activation functions, the loss function, and the optimizer.
 
-**Output Layer**: The output layer consists of a single neuron with a linear activation function. This neuron's output represents the predicted redshift of the observed galaxy. During training, this prediction is compared to the actual redshift to compute the loss, which guides the network's weight adjustments.
+### Results
 
-## Training
+The final architecture of the model (after Bayesian hyperparameter optimization) is as follows:
 
-### Batch size
+| Layer type    | Filters / Units | Kernel Size | Param # |
+| ------------- | --------------- | ----------- | ------- |
+| Convolutional | 256             | 5           | 1536    |
+| Max Pooling   | -               | -           | 0       |
+| Convolutional | 256             | 5           | 327936  |
+| Max Pooling   | -               | -           | 0       |
+| Convolutional | 128             | 3           | 98432   |
+| Max Pooling   | -               | -           | 0       |
+| Convolutional | 64              | 2           | 16448   |
+| Max Pooling   | -               | -           | 0       |
+| Flatten       | -               | -           | 0       |
+| Dense         | 256             | -           | 147712  |
+| Dense         | 256             | -           | 65792   |
+| Dense         | 128             | -           | 32896   |
+| Dense         | 64              | -           | 8256    |
+| Dense         | 1               | -           | 65      |
+|               |                 |             |         |
+| Total         |                 |             | 699.073 |
+Table: Final architecture of the model.
 
-The batch size constitutes a pivotal hyperparameter in the training process, influencing how the network learns from the data. It signifies the number of data samples that are processed in a single forward and backward pass during each training iteration. The choice of batch size carries significant implications for the network's training dynamics.
+The optimizer and loss function used (after hyperparameter optimization) was the Adamax optimizer with the default starting learning rate of 0.001 and the huber loss function with the default parameters, respectively.
 
-Utilizing a larger batch size can expedite the training process, as more samples are processed in parallel. This can lead to faster convergence, especially on hardware optimized for parallel computations. However, there is a trade-off, as larger batch sizes can increase the risk of overfitting. The network might memorize the training data rather than learning to generalize from it.
-
-Conversely, a smaller batch size entails processing fewer samples at once. This can result in slower training progress, particularly on hardware with limited parallelism. However, smaller batch sizes often lead to better generalization, as the network receives a more diverse set of samples during training. It is less likely to memorize the training data and is more likely to extract meaningful patterns.[^batch_size]
-
-In our experiments, we fine-tuned the batch size and discovered that a setting of 16 yielded the optimal balance between training efficiency and generalization performance.
-
-### Epochs
-
-Epochs refer to the number of times the entire training dataset is processed by the neural network. Each epoch represents a complete cycle through the dataset, during which the network updates its weights based on the observed errors. The choice of the number of epochs is another vital training hyperparameter.
-
-Training for too few epochs may result in an underfit model. In this scenario, the network has not had sufficient exposure to the data to learn complex patterns, and it may not perform well on unseen data.
-
-Conversely, training for an excessive number of epochs can lead to overfitting. The network may become too specialized in capturing the idiosyncrasies of the training data, diminishing its ability to generalize.
-
-Determining the ideal number of epochs involves a balance between achieving convergence and avoiding overfitting. Typically, researchers employ techniques like early stopping, which monitors validation performance and halts training when it starts to degrade, to guide epoch selection.
-
-In our experiments, we found through early stopping that training for 20 epochs yielded satisfactory results.
+The batch size and number of epochs were not included in the search space of hyperparameters, but instead were chosen manually after experimentation. The batch size was chosen as 16 and the number of epochs as 20.
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
@@ -331,3 +359,5 @@ In our experiments, we found through early stopping that training for 20 epochs 
 [^relu]: Jason Brownlee. A Gentle Introduction to the Rectified Linear Unit (ReLU). Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
 [^bprp]: René Andrae. Sampled Mean Spectrum generator (SMSgen). Gaia Archive. September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_smsgen.html>
 [^ugc]: Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
+[^grid_search]: Random Search for Hyper-Parameter Optimization. Journal of Machine Learning Research. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
+[^bayesian]: Sequential model-based optimization for general algorithm configuration. Learning and Intelligent Optimization. Lecture Notes in Computer Science. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
