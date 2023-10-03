@@ -51,7 +51,7 @@ The subsequent chapters of this dissertation are organized as follows:
 2. **Background**: Introduce foundational concepts related to the Gaia mission, galaxy redshift and machine learning methods.
 3. **Data Preparation**: Details the process of selecting and cleaning galaxy spectra data for model training.
 4. **Methodology**: Elaborates on the methodologies used for CNN model training and evaluation.
-5. **Results and Discussion**: Presents the findings of our experiments, assesses model performance, and discusses implications.
+5. **Results & Discussion**: Presents the findings of our experiments, assesses model performance, and discusses implications.
 6. **Conclusion**: Summarizes key takeaways and outlines potential areas for future research.
 
 # Background
@@ -214,11 +214,17 @@ Conversely, a smaller batch size entails processing fewer samples at once. This 
 
 Epochs refer to the number of times the entire training dataset is processed by the neural network. Each epoch represents a complete cycle through the dataset, during which the network updates its weights based on the observed errors. The choice of the number of epochs is another vital training hyperparameter.
 
-Training for too few epochs may result in an underfit model. In this scenario, the network has not had sufficient exposure to the data to learn complex patterns, and it may not perform well on unseen data.
-
-Conversely, training for an excessive number of epochs can lead to overfitting. The network may become too specialized in capturing the idiosyncrasies of the training data, diminishing its ability to generalize.
+Training for too few epochs may result in an underfit model, and, conversely, training for an excessive number of epochs can lead to overfitting, more about these two concepts in the next section.
 
 Determining the ideal number of epochs involves a balance between achieving convergence and avoiding overfitting. Typically, researchers employ techniques like early stopping, which monitors validation performance and halts training when it starts to degrade, to guide epoch selection.
+
+### Overfitting and Underfitting
+
+As mentioned previously, overfitting and underfitting are two common problems that can occur during the training of a neural network.
+
+Overfitting occurs when a model learns to fit the training data too closely. In other words, it captures not just the underlying patterns but also the noise in the data. As a result, the model performs exceptionally well on the training data but poorly on unseen data. Overfitting is a sign that the model has become too complex, often due to hyperparameters like a high degree of polynomial features or a large number of hidden layers in a neural network.
+
+Underfitting on the other hand, occurs when a model is too simple to capture the underlying patterns in the data. It fails to learn from the training data effectively and, as a consequence, performs poorly both on the training set and unseen data. Underfitting can be a result of hyperparameters that restrict the model's capacity, such as a shallow architecture or a low learning rate.
 
 # Data Preparation
 
@@ -313,29 +319,47 @@ The search space of hyperparameters was chosen as: the number of convolutional l
 
 The final architecture of the model (after Bayesian hyperparameter optimization) is as follows:
 
-| Layer type    | Filters / Units | Kernel Size | Param # |
-| ------------- | --------------- | ----------- | ------- |
-| Convolutional | 256             | 5           | 1536    |
-| Max Pooling   | -               | -           | 0       |
-| Convolutional | 256             | 5           | 327936  |
-| Max Pooling   | -               | -           | 0       |
-| Convolutional | 128             | 3           | 98432   |
-| Max Pooling   | -               | -           | 0       |
-| Convolutional | 64              | 2           | 16448   |
-| Max Pooling   | -               | -           | 0       |
-| Flatten       | -               | -           | 0       |
-| Dense         | 256             | -           | 147712  |
-| Dense         | 256             | -           | 65792   |
-| Dense         | 128             | -           | 32896   |
-| Dense         | 64              | -           | 8256    |
-| Dense         | 1               | -           | 65      |
-|               |                 |             |         |
-| Total         |                 |             | 699.073 |
+| Layer type    | Filters / Units | Kernel Size | # of Params |
+| ------------- | --------------- | ----------- | ----------- |
+| Convolutional | 256             | 5           | 1536        |
+| Max Pooling   | -               | -           | 0           |
+| Convolutional | 256             | 5           | 327936      |
+| Max Pooling   | -               | -           | 0           |
+| Convolutional | 128             | 3           | 98432       |
+| Max Pooling   | -               | -           | 0           |
+| Convolutional | 64              | 2           | 16448       |
+| Max Pooling   | -               | -           | 0           |
+| Flatten       | -               | -           | 0           |
+| Dense         | 256             | -           | 147712      |
+| Dense         | 256             | -           | 65792       |
+| Dense         | 128             | -           | 32896       |
+| Dense         | 64              | -           | 8256        |
+| Dense         | 1               | -           | 65          |
+|               |                 |             |             |
+| Total         |                 |             | 699.073     |
 Table: Final architecture of the model.
 
 The optimizer and loss function used (after hyperparameter optimization) was the Adamax optimizer with the default starting learning rate of 0.001 and the huber loss function with the default parameters, respectively.
 
-The batch size and number of epochs were not included in the search space of hyperparameters, but instead were chosen manually after experimentation. The batch size was chosen as 16 and the number of epochs as 20.
+The batch size and number of epochs were not included in the search space of hyperparameters, but instead were chosen manually after experimentation using the early stopping technique. The batch size was chosen as 16 and the number of epochs as 20.
+
+## Training & Validation
+
+The model was trained on a single AMD RX 6600 GPU with 8GB of VRAM. The training process took approximately 1 hour and 15 minutes. The training and validation loss and mean absolute error (MAE) are shown in the figures below.
+
+![Training and validation loss](./figures/test_0.1_val_0.3/training_loss.png){width=99%}
+
+We can see from the training and validation loss figure that the model doesn't overfit, as the training loss decreases monotonically the validation loss closely follows it. The training loss is slightly lower than the validation loss, which is expected, as the validation set is data that the model hasn't seen before.
+
+It might seem from this figure that if we were to train the model for more epochs, the training and validation losses would continue to decrease. However, this is not the case, as the model has already converged, and training it for more epochs would only lead to overfitting. This was confirmed by training the model for 30 epochs, which resulted in a higher validation loss.
+
+![Training and validation Mean Absolute Error](./figures/test_0.1_val_0.3/training_mae.png)
+
+This figure shows the Mean Absolute Error (MAE) of the training and validation sets. The MAE is a metric that measures the average difference between the model's predictions and the actual values. It's a common metric used to evaluate the accuracy of regression models.
+
+The training loss seems to converge to a value of approximately 0.021 after 20 epochs. ThiThe validation loss is also exactly the same, which means that the model performs equally well on the training and validation sets. This is a good sign, as it means that the model generalizes well to unseen data.
+
+# Results & Discussion
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
