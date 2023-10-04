@@ -363,9 +363,9 @@ The training loss seems to converge to a value of approximately 0.021 after 20 e
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
-[^redshift]: Redshift. Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Redshift>
+[^redshift]: What do redshifts tell astronomers. EarthSky. October 4 2023. <https://earthsky.org/astronomy-essentials/what-is-a-redshift/>
 [^ai_venn]: Artificial Intelligence relation to Generative Models subset, Venn diagram. Wikipedia. September 28 2023. <https://en.wikipedia.org/wiki/File:Artificial_Intelligence_relation_to_Generative_Models_subset,_Venn_diagram.png>
-[^cnns]: Convolutional Neural Networks. Wikipedia. September 26 2023. <https://en.wikipedia.org/wiki/Convolutional_neural_network>
+[^cnns]: Francois Chollet. Deep Learning with Python. Manning Publications. 2017
 [^backpropagation]: Backpropagation. Wikipedia. September 27 2023. <https://www.wikipedia.com/en/Backpropagation>
 [^gradient_descent]: What is Gradient Descent?. IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
 [^preprocessing]: Why Data should be Normalized before Training a Neural Network. Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
