@@ -347,7 +347,7 @@ The batch size and number of epochs were not included in the search space of hyp
 
 The model was trained on a single AMD RX 6600 GPU with 8GB of VRAM. The training process took approximately 1 hour and 15 minutes. The training and validation loss and mean absolute error (MAE) are shown in the figures below.
 
-![Training and validation loss](./figures/test_0.1_val_0.3/training_loss.png){width=99%}
+![Training and validation loss](./figures/test_0.1_val_0.3/training_loss.png)
 
 We can see from the training and validation loss figure that the model doesn't overfit, as the training loss decreases monotonically the validation loss closely follows it. The training loss is slightly lower than the validation loss, which is expected, as the validation set is data that the model hasn't seen before.
 
