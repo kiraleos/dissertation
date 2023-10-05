@@ -51,20 +51,26 @@ The subsequent chapters of this dissertation are organized as follows:
 2. **Background**: Introduce foundational concepts related to the Gaia mission, galaxy redshift and machine learning methods.
 3. **Data Preparation**: Details the process of selecting and cleaning galaxy spectra data for model training.
 4. **Methodology**: Elaborates on the methodologies used for CNN model training and evaluation.
-5. **Results & Discussion**: Presents the findings of our experiments, assesses model performance, and discusses implications.
+5. **Results**: Presents the findings of our experiments, assesses model performance, and discusses implications.
 6. **Conclusion**: Summarizes key takeaways and outlines potential areas for future research.
 
 # Background
 
-## Gaia space obvservatory
+## The Gaia Mission
 
-The Gaia mission is a European Space Agency (ESA) space observatory that has been in operation since 2013. The primary goal of the mission is to create a three-dimensional map of our galaxy by measuring the positions, distances, and motions of over two billion stars.
+The Gaia space mission, conducted by the European Space Agency (ESA), is a scientific endeavor designed to create an accurate three-dimensional map of the Milky Way galaxy and enhance our understanding of our cosmic surroundings. This mission relies on precise instrumentation and astrometry.
 
-Gaia is equipped with two optical telescopes accompanied by three scientific instruments, which collaborate to accurately ascertain the positions and velocities of stars. Additionally, these instruments disperse the starlight into spectra, facilitating detailed analysis.
+### Objective and Methodology
 
-Throughout its mission, the spacecraft executes a deliberate rotation, systematically scanning the entire celestial sphere with its two telescopes. As the detectors continuously record the positions of celestial objects, they also capture the objects' movements within the galaxy, along with any alterations therein.
+Gaia employs an array of instruments onboard, with its primary tool being the Astrometric Instrument. This instrument is equipped with two telescopes and a complex set of detectors. Gaia's main objective is to measure the positions and motions of over a billion stars with unprecedented accuracy. By repeatedly observing these stars over time, Gaia constructs a precise 3D model of the Milky Way galaxy.[^gaia_overview]
 
-During its mission, Gaia conducts approximately 14 observations each year for its designated stars. Its primary goals include accurately mapping the positions, distances, motions, and brightness variations of stars. Gaia's mission is expected to uncover various celestial objects, including exoplanets and brown dwarfs, and thoroughly study hundreds of thousands of asteroids within our Solar System. Additionally, the mission involves studying over 1 million distant quasars and conducting new assessments of Albert Einstein's General Theory of Relativity.[^gaia_overview]
+### Dispersing Starlight into Spectra
+
+One of Gaia's notable capabilities is its ability to disperse starlight into spectra. This is achieved through a dedicated Spectroscopic Instrument. This instrument allows Gaia to analyze the spectra of stars, providing valuable insights into their physical properties, such as composition, temperature, and luminosity. Spectroscopy enables the classification of stars into various categories, including main-sequence stars, giants, and white dwarfs.
+
+### Connecting to Galaxy Redshift
+
+The capacity to disperse starlight into spectra has implications for the study of galaxy redshift. Gaia's Spectroscopic Instrument can also be utilized to analyze the light emitted by galaxies. By measuring the redshift of galaxy spectra, astronomers can gain insight into the relative motion of galaxies and their distances from us. This redshift data contributes to our understanding of the expanding universe and connects our discussion to the subsequent section, where we delve into the concept of galaxy redshift in greater detail.
 
 ## Galaxy redshift
 
