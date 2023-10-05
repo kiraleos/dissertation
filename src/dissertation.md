@@ -64,11 +64,9 @@ The Gaia space mission, conducted by the European Space Agency (ESA), is a scien
 
 Gaia employs an array of instruments onboard, with its primary tool being the Astrometric Instrument. This instrument is equipped with two telescopes and a complex set of detectors. Gaia's main objective is to measure the positions and motions of over a billion stars with unprecedented accuracy. By repeatedly observing these stars over time, Gaia constructs a precise 3D model of the Milky Way galaxy.[^gaia_overview]
 
-### Dispersing Starlight into Spectra
+### Spectroscopy
 
 One of Gaia's notable capabilities is its ability to disperse starlight into spectra. This is achieved through a dedicated Spectroscopic Instrument. This instrument allows Gaia to analyze the spectra of stars, providing valuable insights into their physical properties, such as composition, temperature, and luminosity. Spectroscopy enables the classification of stars into various categories, including main-sequence stars, giants, and white dwarfs.
-
-### Connecting to Galaxy Redshift
 
 The capacity to disperse starlight into spectra has implications for the study of galaxy redshift. Gaia's Spectroscopic Instrument can also be utilized to analyze the light emitted by galaxies. By measuring the redshift of galaxy spectra, astronomers can gain insight into the relative motion of galaxies and their distances from us. This redshift data contributes to our understanding of the expanding universe and connects our discussion to the subsequent section, where we delve into the concept of galaxy redshift in greater detail.
 
@@ -76,7 +74,7 @@ The capacity to disperse starlight into spectra has implications for the study o
 
 Galaxy redshift is a fundamental astronomical property that describes the relative motion of a galaxy with respect to Earth. The redshift of a galaxy is measured by analyzing the spectrum of light emitted by the galaxy, which appears to be shifted towards longer wavelengths due to the Doppler effect. Redshift is a crucial parameter in astronomy, as it provides information about the distance, velocity, and evolution of galaxies.
 
-The redshift of a galaxy is measured in units of "$z$", which is defined as the fractional shift in the wavelength of light emitted by the galaxy. Specifically, the redshift "$z$" is defined as:
+The redshift of a galaxy has no units, and is defined as the fractional shift in the wavelength of light emitted by the galaxy. Specifically, the redshift "$z$" is defined as:
 
 $$z = \frac{\lambda_{obsv} - \lambda_{emit}}{\lambda_{emit}}$$
 
@@ -370,6 +368,47 @@ This figure shows the Mean Absolute Error (MAE) of the training and validation s
 The training loss seems to converge to a value of approximately 0.021 after 20 epochs. The validation loss is also exactly the same, which means that the model performs equally well on the training and validation sets. This is a good sign, as it means that the model generalizes well to unseen data.
 
 # Results & Discussion
+
+Next we will discuss the results of the model and its performance on the test set by analyzing its performance on the different redshift ranges through looking at different figures and metrics.
+
+## Mean Error
+
+The model was evaluated on the test set, which contained 10% of the data (around 52.000 samples). The test set was not used during training, so it represents unseen data.
+
+It achieved a mean absolute error (MAE) of 0.021 on the test set which means that the model's predictions are on average 0.021 away from the actual values. For example, if the actual redshift of a galaxy is 0.142 (the dataset's mean redshift), the model's prediction will be either 0.163, or 0.121, on average. Now, let's look at the model's performance on more specific different redshift ranges.
+
+| redshift bin | mean error | std ($\sigma$) | % of data |
+| ------------ | ---------- | -------------- | --------- |
+| 0.00 - 0.05  | 0.0216     | 0.0236         | 6.62      |
+| 0.05 - 0.10  | 0.0117     | 0.0208         | 27.77     |
+| 0.10 - 0.15  | 0.0013     | 0.0243         | 28.99     |
+| 0.15 - 0.20  | -0.0081    | 0.0296         | 16.61     |
+| 0.20 - 0.25  | -0.0110    | 0.0346         | 8.80      |
+| 0.25 - 0.30  | -0.0122    | 0.0333         | 6.00      |
+| 0.30 - 0.35  | -0.0248    | 0.0351         | 3.55      |
+| 0.35 - 0.40  | -0.0458    | 0.0416         | 1.15      |
+| 0.40 - 0.45  | -0.0793    | 0.0593         | 0.30      |
+| 0.45 - 0.50  | -0.1327    | 0.0806         | 0.11      |
+| 0.50 - 0.55  | -0.1804    | 0.1128         | 0.06      |
+| 0.55 - 0.60  | -0.2100    | 0.0978         | 0.04      |
+Table: Mean error, standard deviation and percentage of data per redshift bin of 0.05
+
+The absolute mean error is $\le |0.21|$ for the whole dataset, and the standard deviation is $\le 0.1$. As the redshift increases, the mean error also increases, and the standard deviation increases as well. This is expected, as the model was trained on a dataset that contained mostly low redshift galaxies.
+
+Since, though, 99% of the galaxies have a redshift of $z \le 0.37$, we can calculate the mean absolute error for the first 7 bins (0 to 0.35) to determine the model's performance on the majority of the data. The mean absolute error for these bins is 0.013 and the mean standard deviation is 0.032. This means that the model's predictions are on average 0.013 away from the actual values, which is a very good result.
+
+We can also pick out the best performing bins which are the 2nd, 3rd, 4th, 5th and 6th redshift bins, and which constitute 88.17% of the data. The mean error in these bins is 0.00886.
+
+The best performing bin is the 3rd bin (0.10 - 0.15) with a mean error of 0.0013 and a standard deviation of 0.0243. This means that the model's predictions are on average 0.0013 away from the actual values, which is an excellent result.
+
+The worst performing bins are the 9th, 10th, 11th and 12th redshift bins, which constitute 0.51% of the data. The mean absolute error in these bins is 0.15.
+
+The first bin (0.00 - 0.05) is also a badly performing bin, at least compared to the next 6, with a mean error of 0.0216. This is not entirely expected, since galaxies with such a low redshift, and therefore close to Earth, should have low signal-to-noise spectra and thus have cleaner data for a model to learn from.
+
+Below are two figures that show the mean error and standard deviation per redshift bin.
+
+![Mean error and standard deviation per redshift bin](./figures/errorbars_0.5_bins.png){width=50%}
+![Mean error and standard deviation per redshift bin](./figures/hlines_0.5_bins.png){width=50%}
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
