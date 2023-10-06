@@ -1,1 +1,1 @@
-pandoc -s .\src\dissertation.md -f markdown -t pdf -o .\out\dissertation.pdf -H ./src/disable_float.tex --pdf-engine=xelatex --highlight-style=tango
+pandoc -s .\src\dissertation.md -f markdown -t pdf -o .\out\dissertation.pdf -H ./src/disable_float.tex

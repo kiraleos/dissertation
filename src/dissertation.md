@@ -9,7 +9,6 @@ indent: true
 numbersections: true
 geometry: "left=3cm,right=3cm,top=3cm,bottom=3cm"
 fontsize: 12pt
-# mainfont: "Georgia"
 ---
 
 \newpage
@@ -351,17 +350,17 @@ The batch size and number of epochs were not included in the search space of hyp
 
 The model was trained on a single AMD RX 6600 GPU with 8GB of VRAM. The training process took approximately 1 hour and 15 minutes. The training and validation loss and mean absolute error (MAE) are shown in the figures below.
 
-![Training and validation loss after 20 epochs](./figures/test_0.1_val_0.3/training_loss.png)
+![Training and validation loss after 20 epochs](./figures/test_0.1_val_0.3/training_loss.png){width=85%}
 
 We can see from the training and validation loss figure that the model doesn't overfit, as the training loss decreases monotonically the validation loss closely follows it. The training loss is slightly lower than the validation loss, which is expected, as the validation set is data that the model hasn't seen before.
 
 It might seem from this figure that if we were to train the model for more epochs, the training and validation losses would continue to decrease. However, this is not the case, as the model has already converged, and training it for more epochs would only lead to overfitting, as shown by the next figure.
 
-![Training and validation loss after 30 epochs](./figures/training_loss_30_epochs.png)
+![Training and validation loss after 30 epochs](./figures/training_loss_30_epochs.png){width=85%}
 
 From this figure we can see that the training loss continues to decrease after 20 epochs, but the validation loss keeps hovering around the same value (0.00050) as with 20 epochs. This is a clear sign that the model has converged and is now overfitting.
 
-![Training and validation Mean Absolute Error](./figures/test_0.1_val_0.3/training_mae.png)
+![Training and validation Mean Absolute Error](./figures/test_0.1_val_0.3/training_mae.png){width=85%}
 
 This figure shows the Mean Absolute Error (MAE) of the training and validation sets. The MAE is a metric that measures the average difference between the model's predictions and the actual values. It's a common metric used to evaluate the accuracy of regression models.
 
@@ -371,11 +370,11 @@ The training loss seems to converge to a value of approximately 0.021 after 20 e
 
 Next we will discuss the results of the model and its performance on the test set by analyzing its performance on the different redshift ranges through looking at different figures and metrics.
 
-## Mean Error
+## Error & Standard Deviation
 
 The model was evaluated on the test set, which contained 10% of the data (around 52.000 samples). The test set was not used during training, so it represents unseen data.
 
-It achieved a mean absolute error (MAE) of 0.021 on the test set which means that the model's predictions are on average 0.021 away from the actual values. For example, if the actual redshift of a galaxy is 0.142 (the dataset's mean redshift), the model's prediction will be either 0.163, or 0.121, on average. Now, let's look at the model's performance on more specific different redshift ranges.
+It achieved a mean absolute error (MAE) of 0.021 on the test set which, practically, means that the model's predictions are on average 0.021 away from the actual values. For example, if the actual redshift of a galaxy is 0.142 (the dataset's mean redshift), the model's prediction will be either 0.163, or 0.121, on average. Now, let's look at the model's performance on more specific different redshift ranges.
 
 | redshift bin | mean error | std ($\sigma$) | % of data |
 | ------------ | ---------- | -------------- | --------- |
@@ -393,22 +392,45 @@ It achieved a mean absolute error (MAE) of 0.021 on the test set which means tha
 | 0.55 - 0.60  | -0.2100    | 0.0978         | 0.04      |
 Table: Mean error, standard deviation and percentage of data per redshift bin of 0.05
 
-The absolute mean error is $\le |0.21|$ for the whole dataset, and the standard deviation is $\le 0.1$. As the redshift increases, the mean error also increases, and the standard deviation increases as well. This is expected, as the model was trained on a dataset that contained mostly low redshift galaxies.
+![](./figures/errorbars_0.5_bins.png){width=50%}
+![](./figures/hlines_0.5_bins.png){width=50%}
+\begin{figure}
+\caption{Mean error and standard deviation per redshift bin}
+\end{figure}
 
-Since, though, 99% of the galaxies have a redshift of $z \le 0.37$, we can calculate the mean absolute error for the first 7 bins (0 to 0.35) to determine the model's performance on the majority of the data. The mean absolute error for these bins is 0.013 and the mean standard deviation is 0.032. This means that the model's predictions are on average 0.013 away from the actual values, which is a very good result.
+The absolute mean error is $\le |0.21|$ for the whole dataset, and the standard deviation is $\le 0.1$. As the redshift increases, the absolute mean error also increases, and the standard deviation increases as well. This is expected, as the model was trained on a dataset that contained mostly low redshift galaxies.
+
+Since, though, 99% of the galaxies have a redshift of $z \le 0.37$, we can calculate the mean absolute error for the first 7 bins (0 to 0.35) to determine the model's performance on the overwhelming majority of the data. The mean absolute error for these bins is 0.013 and the mean standard deviation is 0.032. This means that the model's predictions are on average 0.013 away from the actual values, which is a very good result.
 
 We can also pick out the best performing bins which are the 2nd, 3rd, 4th, 5th and 6th redshift bins, and which constitute 88.17% of the data. The mean error in these bins is 0.00886.
 
-The best performing bin is the 3rd bin (0.10 - 0.15) with a mean error of 0.0013 and a standard deviation of 0.0243. This means that the model's predictions are on average 0.0013 away from the actual values, which is an excellent result.
+The best performing bin is the 3rd bin (0.10 - 0.15) with 29% of the data and a mean error of 0.0013 and a standard deviation of 0.0243. This means that the model's predictions are on average 0.0013 away from the actual values, which is an excellent result.
 
 The worst performing bins are the 9th, 10th, 11th and 12th redshift bins, which constitute 0.51% of the data. The mean absolute error in these bins is 0.15.
 
-The first bin (0.00 - 0.05) is also a badly performing bin, at least compared to the next 6, with a mean error of 0.0216. This is not entirely expected, since galaxies with such a low redshift, and therefore close to Earth, should have low signal-to-noise spectra and thus have cleaner data for a model to learn from.
+The first bin (0.00 - 0.05) is also a relatively badly performing bin, at least compared to the next 6, with a mean error of 0.0216. This is not entirely expected, since galaxies with such a low redshift, and therefore close to Earth, should have low signal-to-noise spectra and thus have cleaner data for a model to learn from.
 
-Below are two figures that show the mean error and standard deviation per redshift bin.
+A final note is that the model's bias is negative, which means that it tends to predict lower redshifts than the actual values.
 
-![Mean error and standard deviation per redshift bin](./figures/errorbars_0.5_bins.png){width=50%}
-![Mean error and standard deviation per redshift bin](./figures/hlines_0.5_bins.png){width=50%}
+## Visual Analysis
+
+![Histogram of the predicted and true redshifts](./figures/test_0.1_val_0.3/cnn_vs_sdss_hist.png){width=85%}
+
+This figure shows a histogram of the predicted and true redshifts. The x-axis represents the redshift, and the y-axis represents the number of galaxies with that redshift. The blue bars represent the true redshifts, and the beige bars represent the predicted redshifts.
+
+If the model could predict the redshifts perfectly, the beige bars would be exactly on top of the blue bars. However, we can see that the beige bars are not exactly on top of the blue bars. The model misses the double peaks around the 0.1 redshift mark and instead has a single higher peak, and there are some ranges where the model predicts lower redshifts than the true values for example around the 0.2 redshift mark.
+
+Overall, though, as we also saw in the previous section, the model's predictions are very close to the true values, and the histogram shows that the model performs very well.
+
+![Two dimensional histogram of the predicted and true redshifts](./figures/hist2d_jet.png){width=85%}
+
+This figure shows a two dimensional histogram of the predicted and true redshifts. The x-axis represents the true redshift, and the y-axis represents the predicted redshift. The color of each point represents the number of galaxies with that true and predicted redshift. Worth noting is that the color scale is logarithmic, so the redder the color, the (exponentially) more galaxies there are with that true and predicted redshift.
+
+For a perfect fit, all of the points would be on the black diagonal line. Obviously, we can see that the points are not exactly on it but are very close to it.
+
+This type of plot is also useful for seeing the outliers of the model. The outliers are the points that are far away from the diagonal line. We can see that there are some outliers, but they are very few (in the order of 100s) compared to the total number of galaxies (in the order of 10.000s).
+
+We can also see the model's negative bias in the upper redshift ranges as the points are, on average, slightly below the diagonal line the more you go up in redshift. We can also note that most of the outliers are also below the diagonal line, so they might be a big contributing factor to the model's negative bias.
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
