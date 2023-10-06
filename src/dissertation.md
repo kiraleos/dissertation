@@ -221,13 +221,25 @@ Training for too few epochs may result in an underfit model, and, conversely, tr
 
 Determining the ideal number of epochs involves a balance between achieving convergence and avoiding overfitting. Typically, researchers employ techniques like early stopping, which monitors validation performance and halts training when it starts to degrade, to guide epoch selection.
 
-### Overfitting and Underfitting
+### Common training roadblocks
 
-As mentioned previously, overfitting and underfitting are two common problems that can occur during the training of a neural network.
+Overfitting and underfitting where mentioned before as two common problems that can occur during the training of a neural network. There are also other common problems that can occur during training, such as vanishing and exploding gradients.
+
+#### Overfitting & Underfitting
 
 Overfitting occurs when a model learns to fit the training data too closely. In other words, it captures not just the underlying patterns but also the noise in the data. As a result, the model performs exceptionally well on the training data but poorly on unseen data. Overfitting is a sign that the model has become too complex, often due to hyperparameters like a high degree of polynomial features or a large number of hidden layers in a neural network.
 
 Underfitting on the other hand, occurs when a model is too simple to capture the underlying patterns in the data. It fails to learn from the training data effectively and, as a consequence, performs poorly both on the training set and unseen data. Underfitting can be a result of hyperparameters that restrict the model's capacity, such as a shallow architecture or a low learning rate.
+
+To mitigate overfitting, regularization techniques such as dropout, L1/L2 regularization, and early stopping are commonly employed. These methods introduce constraints on the model's parameters, discouraging it from fitting noise in the data. In the case of underfitting, model architecture adjustments, including increasing the depth and complexity of neural networks, may be necessary. A careful balance between model complexity and the size of the training dataset is crucial to combat both overfitting and underfitting effectively.[^overfitting]
+
+#### Vanishing & Exploding Gradients
+
+Vanishing gradients are another issue in neural networks, particularly in networks with many layers. When backpropagating errors through deep architectures, gradients can become infinitesimally small. This phenomenon impedes the effective update of weights in earlier layers, causing slow convergence or stagnation in learning. Vanishing gradients restrict the network's capacity to capture long-range dependencies in sequential data or hierarchies of features in deep convolutional networks.
+
+Conversely, exploding gradients occur when gradients become exceedingly large. This can lead to unstable training dynamics, as the weights are updated too drastically. Exploding gradients are often a result of poor weight initialization or a high learning rate.
+
+Several strategies have been proposed to address vanishing and exploding gradients. Weight initialization techniques, such as Xavier (Glorot) initialization, are designed to ensure proper scaling of weights, helping to alleviate the vanishing gradient problem. Gradient clipping, which involves bounding gradients during training, prevents them from reaching extremely high values, mitigating the issue of exploding gradients. Additionally, the use of activation functions with derivatives that do not approach zero or infinity, such as the Rectified Linear Unit (ReLU), has become prevalent in deep neural networks, offering some resilience against vanishing and exploding gradients.[^vanishing_gradients]
 
 # Data Preparation
 
@@ -422,7 +434,7 @@ If the model could predict the redshifts perfectly, the beige bars would be exac
 
 Overall, though, as we also saw in the previous section, the model's predictions are very close to the true values, and the histogram shows that the model performs very well.
 
-![Two dimensional histogram of the predicted and true redshifts](./figures/hist2d_jet.png){width=85%}
+![Two dimensional histogram of the predicted and true redshifts](./figures/hist2d_inferno.png){width=85%}
 
 This figure shows a two dimensional histogram of the predicted and true redshifts. The x-axis represents the true redshift, and the y-axis represents the predicted redshift. The color of each point represents the number of galaxies with that true and predicted redshift. Worth noting is that the color scale is logarithmic, so the redder the color, the (exponentially) more galaxies there are with that true and predicted redshift.
 
@@ -456,3 +468,5 @@ We can also see the model's negative bias in the upper redshift ranges as the po
 [^ugc]: Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
 [^grid_search]: Random Search for Hyper-Parameter Optimization. Journal of Machine Learning Research. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
 [^bayesian]: Sequential model-based optimization for general algorithm configuration. Learning and Intelligent Optimization. Lecture Notes in Computer Science. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
+[^overfitting]: Overfitting and Underfitting With Machine Learning Algorithms. Machine Learning Mastery. October 6 2023. <https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/>
+[^vanishing_gradients]: The Challenge of Vanishing/Exploding Gradients in Deep Neural Networks. Analytics Vidhya. October 6 2023. <https://www.analyticsvidhya.com/blog/2021/06/the-challenge-of-vanishing-exploding-gradients-in-deep-neural-networks/>
