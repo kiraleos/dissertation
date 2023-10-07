@@ -16,9 +16,7 @@ fontsize: 12pt
 
 \newpage
 
-*I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation.*
-
-*I would also like to thank my supervisor Nikolaos Vasilas and my co-supervisor, Emmanuel Bratsolis, for their guidance and support throughout the dissertation.*
+<!-- *I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation.* -->
 
 \newpage
 
@@ -468,6 +466,8 @@ While the model's predictions exhibited a slight negative bias, especially in hi
 This research contributes to the field of astronomy and machine learning by showcasing the effectiveness of CNNs in redshift prediction tasks, particularly for galaxies with low to moderate redshifts. These results have significant implications for astronomical studies, facilitating more precise estimations of galaxy redshifts and consequently enhancing our understanding of the cosmos.
 
 In closing, this work serves as a foundation for further exploration into machine learning applications in astrophysics. Future endeavors could explore methods for mitigating the model's bias and bad performance in higher redshift ranges and investigate the integration of additional data sources to increase predictive accuracy.
+
+-------------------------------------------------------------------------------------------------
 
 \newpage
 
