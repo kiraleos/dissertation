@@ -18,7 +18,7 @@ fontsize: 12pt
 
 *I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation.*
 
-*I would also like to thank my co-supervisor, Emmanuel Bratsolis, for his guidance and support throughout the dissertation.*
+*I would also like to thank my supervisor Nikolaos Vasilas and my co-supervisor, Emmanuel Bratsolis, for their guidance and support throughout the dissertation.*
 
 \newpage
 
