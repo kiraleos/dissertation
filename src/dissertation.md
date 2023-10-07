@@ -16,7 +16,9 @@ fontsize: 12pt
 
 \newpage
 
-*I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation. I would also like to thank my co-supervisor, Emmanuel Bratsolis, for his guidance and support throughout the dissertation.*
+*I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation.*
+
+*I would also like to thank my co-supervisor, Emmanuel Bratsolis, for his guidance and support throughout the dissertation.*
 
 \newpage
 
@@ -503,7 +505,146 @@ In closing, this work serves as a foundation for further exploration into machin
 
 ## Code{.unlisted .unnumbered}
 
-The code for this dissertation can be found in the following GitHub repository: <https://github.com/kiraleos/dissertation>
+The code for this dissertation along with the markdown source, figures, etc. can also be found in the following GitHub repository: <https://github.com/kiraleos/dissertation>
+
+```python
+import matplotlib.pyplot as plt
+import matplotlib.colors
+import numpy as np
+import os
+import pandas as pd
+import random
+import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, QuantileTransformer
+from sklearn.model_selection import train_test_split
+
+seed_value = 4
+random.seed(seed_value)
+np.random.seed(seed_value)
+tf.random.set_seed(seed_value)
+SAVE_FIGURES = True
+
+data = pd.read_csv('./training_data/TESTclean.csv')
+spectra = np.array(data.iloc[:, 1:])
+redshifts = np.array(data.iloc[:, 0])
+
+min_max_scaler = MinMaxScaler()
+spectra = min_max_scaler.fit_transform(spectra)
+
+spectra_train, spectra_test, redshift_train, redshift_test = train_test_split(spectra, redshifts, test_size=0.1, random_state=seed_value)
+
+model = tf.keras.Sequential([
+    tf.keras.layers.InputLayer(input_shape=(186, 1)),
+    tf.keras.layers.Conv1D(filters=256, kernel_size=5, activation='relu'),
+    tf.keras.layers.MaxPooling1D(),
+    tf.keras.layers.Conv1D(filters=256, kernel_size=5, activation='relu'),
+    tf.keras.layers.MaxPooling1D(),
+    tf.keras.layers.Conv1D(filters=128, kernel_size=3, activation='relu'),
+    tf.keras.layers.MaxPooling1D(),
+    tf.keras.layers.Conv1D(filters=64, kernel_size=2, activation='relu'),
+    tf.keras.layers.MaxPooling1D(),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(units=256, activation='relu'),
+    tf.keras.layers.Dense(units=256, activation='relu'),
+    tf.keras.layers.Dense(units=128, activation='relu'),
+    tf.keras.layers.Dense(units=64, activation='relu'),
+    tf.keras.layers.Dense(units=1, activation='linear')
+])
+
+model.compile(optimizer='adamax', loss='huber', metrics=['mean_absolute_error'])
+
+batch_size = 16 # 16
+epochs = 40 # 30
+validation_split = 0.3 # 0.3
+history = model.fit(spectra_train, redshift_train, epochs=epochs, batch_size=batch_size, validation_split=validation_split)
+
+history_df = pd.DataFrame(history.history)
+history_df.to_csv('./history.csv')
+model.save('./model.keras')
+# model = tf.keras.models.load_model('./model.keras')
+
+plt.scatter(history_df.index, history_df['loss'], label='Training Loss', marker='x')
+plt.scatter(history_df.index, history_df['val_loss'], label='Validation Loss', marker='+')
+plt.xlabel('Epochs')
+plt.xticks(np.arange(0, epochs, 1))
+plt.ylabel('Loss')
+plt.legend()
+plt.title('Training and Validation Loss')
+
+plt.figure()
+plt.scatter(history_df.index, history_df['mean_absolute_error'], label='Training MAE', marker='x')
+plt.scatter(history_df.index, history_df['val_mean_absolute_error'], label='Validation MAE', marker='+')
+plt.xlabel('Epochs')
+plt.xticks(np.arange(0, epochs, 1))
+plt.ylabel('Loss')
+plt.legend()
+plt.title('Training and Validation Mean Absolute Error (MAE)')
+
+plt.show()
+
+spectra_to_predict = spectra_test
+redshifts_true = redshift_test
+
+redshift_predicted = model.predict(spectra_to_predict, batch_size=1000)
+redshift_predicted = np.reshape(redshift_predicted, (spectra_to_predict.shape[0],))
+
+mae = np.mean(np.abs(redshifts_true - redshift_predicted))
+print('MAE:', mae)
+
+BINS = 200
+CMAP = 'inferno'
+
+plt.figure()
+plt.hist2d(redshifts_true, redshift_predicted, bins=BINS, norm=matplotlib.colors.LogNorm(), cmap=CMAP)
+plt.plot([0, 0.6], [0, 0.6], '-', c='black')
+plt.xlabel('redshift (SDSS)')
+plt.ylabel('redshift (cnn)')
+plt.colorbar()
+plt.title("cnn vs SDSS")
+
+HIST_BIN_SCALE = 150
+
+plt.figure()
+plt.hist(redshifts_true, bins=np.linspace(min(redshifts_true), max(redshifts_true), HIST_BIN_SCALE), edgecolor='black', alpha=0.8, label='redshift (SDSS)', color='red')
+plt.hist(redshift_predicted, bins=np.linspace(min(redshifts_true), max(redshifts_true), HIST_BIN_SCALE), edgecolor='black', alpha=0.5, label='redshift (cnn)', color='green')
+plt.xlabel('redshift')
+plt.title("cnn vs SDSS")
+plt.legend()
+
+BIN_SIZE = 0.05
+
+absolute_error = redshift_predicted - redshifts_true
+bins = np.arange(0, max(redshifts_true) + BIN_SIZE, BIN_SIZE)
+bin_indices = np.digitize(redshifts_true, bins)
+mean_errors = [np.mean(absolute_error[bin_indices == i]) for i in range(1, len(bins))]
+std_errors = [np.std(absolute_error[bin_indices == i]) for i in range(1, len(bins))]
+
+bin_centers = (bins[:-1] + bins[1:]) / 2
+
+plt.figure()
+plt.errorbar(bin_centers, mean_errors, yerr=std_errors, fmt='o', ecolor='black', capsize=2, elinewidth=1, markeredgewidth=1, label='Mean error')
+plt.plot([0, 0.6], [0, 0])
+plt.xlabel('redshift')
+plt.ylabel('zDiff = z(CNN) - z(SDSS)')
+plt.ylim([-0.59, 0.59])
+plt.xlim([0, 0.6])
+plt.title(f"Mean error between CNN and SDSS")
+
+plt.figure()
+plt.hlines(mean_errors, bins[:-1], bins[1:], colors=['blue'], linewidth=3.0, label='Mean Error')
+plt.hlines(std_errors, bins[:-1], bins[1:], colors=['red'], linewidth=3.0, label='Standard Deviation')
+plt.plot([0, 0.6], [0, 0], c='black', linewidth=0.5)
+plt.xlabel('redshift')
+plt.ylabel('zDiff = z(CNN) - z(SDSS)')
+plt.ylim([-0.59, 0.59])
+plt.title(f"Mean error and std between CNN and SDSS")
+plt.legend()
+
+print("| redshift bin | mean error | std error |")
+print("|--------------|------------| --------- |")
+for i in range(len(mean_errors)):
+    print(f"| {bins[i]:.2f} - {bins[i+1]:.2f} | {mean_errors[i]:.4f} | {std_errors[i]:.4f} |")
+```
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
