@@ -137,7 +137,7 @@ Convolutional neural networks (CNNs) are a specific type of ANN that has proven 
 
 The key differentiator of CNNs is their use of convolutional layers, which enable the network to automatically learn and extract local spatial features from raw input data. In a convolutional layer, each neuron is connected only to a small, localized region of the input data, known as the receptive field. By sharing weights across all neurons within a receptive field, the network can efficiently learn to detect local patterns and features, regardless of their location within the input image.
 
-![Neurons of a convolutional layer(right) connected to their receptive field (left)[^receptive_field]](./figures/receptive_field.png){width=50%}
+![Neurons of a convolutional layer (right) connected to their receptive field (left)[^receptive_field]](./figures/receptive_field.png){width=50%}
 
 CNNs typically also include pooling layers, which downsample the output of the previous layer by taking the maximum or average value within small local regions. This helps to reduce the dimensionality of the input and extract higher-level features from the local features learned in the previous convolutional layer.
 
@@ -442,7 +442,51 @@ For a perfect fit, all of the points would be on the black diagonal line. Obviou
 
 This type of plot is also useful for seeing the outliers of the model. The outliers are the points that are far away from the diagonal line. We can see that there are some outliers, but they are very few (in the order of 100s) compared to the total number of galaxies (in the order of 10.000s).
 
-We can also see the model's negative bias in the upper redshift ranges as the points are, on average, slightly below the diagonal line the more you go up in redshift. We can also note that most of the outliers are also below the diagonal line, so they might be a big contributing factor to the model's negative bias.
+We can also see the model's negative bias in the upper redshift ranges as the points are, on average, slightly below the diagonal line the more you go up in redshift. We can also note that most of the outliers are also below the diagonal line, so they could be a contributing factor to the model's negative bias.
+
+This concludes the results and discussion chapter. Next we will look at the conclusions of this dissertation.
+
+# Conclusions
+
+In this dissertation, we trained and evaluated a Convolutional Neural Network that predicts galaxy redshifts. This work leveraged the dataset generously provided by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC).
+
+The findings reveal that the CNN exhibits a commendable performance in predicting galaxy redshifts. The model achieved a mean absolute error (MAE) of 0.021 on the test set, signifying a high level of accuracy. This result showcases the model's capability to make predictions with an average deviation of only 0.021 from actual values, on average.
+
+Furthermore, a detailed examination of the model's performance across different redshift ranges demonstrated its robustness. Notably, for redshift ranges within the 0.00 - 0.35 interval, encompassing the overwheling majority of the data, the model displayed an even more impressive MAE of 0.013.
+
+While the model's predictions exhibited a slight negative bias, especially in higher redshift ranges, this bias remains a potential area for future refinement. The two-dimensional histogram analysis revealed that outliers were relatively scarce, affirming the model's consistency in predicting redshifts.
+
+This research contributes to the field of astronomy and machine learning by showcasing the effectiveness of CNNs in redshift prediction tasks, particularly for galaxies with low to moderate redshifts. These results have significant implications for astronomical studies, facilitating more precise estimations of galaxy redshifts and consequently enhancing our understanding of the cosmos.
+
+In closing, this work serves as a foundation for further exploration into machine learning applications in astrophysics. Future endeavors could explore methods for mitigating the model's bias and bad performance in higher redshift ranges and investigate the integration of additional data sources to increase predictive accuracy.
+
+# Appendix
+
+## Code
+
+The code for this dissertation can be found in the following GitHub repository: <https://github.com/kiraleos/dissertation>
+
+## Bibliography
+
+1. Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
+1. What do redshifts tell astronomers. EarthSky. October 4 2023. <https://earthsky.org/astronomy-essentials/what-is-a-redshift/>
+1. Francois Chollet. Deep Learning with Python. Manning Publications. 2017
+1. What is Gradient Descent?. IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
+1. Why Data should be Normalized before Training a Neural Network. Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
+1. Stochastic Gradient Descent (SGD). GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
+1. Adam: A Method for Stochastic Optimization. arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
+1. Rectified Linear Units (ReLU) in Deep Learning. Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
+1. Activation Functions in Neural Networks. Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
+1. How to Control the Stability of Training Neural Networks With the Batch Size. Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
+1. Phung, & Rhee,. (2019). A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Applied Sciences. 9. 4500. 10.3390/app9214500.
+1. Michael A. Nielsen. Neural networks and Deep Learning. Determination Press. 2015
+1. Jason Brownlee. A Gentle Introduction to the Rectified Linear Unit (ReLU). Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
+1. René Andrae. Sampled Mean Spectrum generator (SMSgen). Gaia Archive. September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_smsgen.html>
+1. Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
+1. Random Search for Hyper-Parameter Optimization. Journal of Machine Learning Research. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
+1. Sequential model-based optimization for general algorithm configuration. Learning and Intelligent Optimization. Lecture Notes in Computer Science. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
+1. Overfitting and Underfitting With Machine Learning Algorithms. Machine Learning Mastery. October 6 2023. <https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/>
+1. The Challenge of Vanishing/Exploding Gradients in Deep Neural Networks. Analytics Vidhya. October 6 2023. <https://www.analyticsvidhya.com/blog/2021/06/the-challenge-of-vanishing-exploding-gradients-in-deep-neural-networks/>
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
