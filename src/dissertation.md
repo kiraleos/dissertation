@@ -646,7 +646,6 @@ for i in range(len(mean_errors)):
     print(f"| {bins[i]:.2f} - {bins[i+1]:.2f} | {mean_errors[i]:.4f} | {std_errors[i]:.4f} |")
 ```
 
-------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
 [^redshift]: What do redshifts tell astronomers. EarthSky. October 4 2023. <https://earthsky.org/astronomy-essentials/what-is-a-redshift/>
 [^ai_venn]: Artificial Intelligence relation to Generative Models subset, Venn diagram. Wikipedia. September 28 2023. <https://en.wikipedia.org/wiki/File:Artificial_Intelligence_relation_to_Generative_Models_subset,_Venn_diagram.png>
