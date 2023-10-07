@@ -1,7 +1,10 @@
 ---
 title: "Application of Machine Learning Methods on Astronomical Databases"
-author: 
-    - "Apostolos Kiraleos"
+subtitle: "Predicting Galaxy Redshifts with Convolutional Neural Networks"
+author:
+    - "Apostolos Kiraleos, AM: 711171037"
+    - "Supervisor: Nikolaos Vasilas"
+    - "Co-Supervisor: Emmanuel Bratsolis"
 abstract: "Galaxy redshift is a crucial parameter in astronomy that provides information on the distance, age, and evolution of galaxies. This dissertation investigates the application of machine learning for predicting galaxy redshifts. It involves the development and training of a neural network to analyze galaxy spectra sourced from the European Space Agency's Gaia mission and showcases the practical implementation of machine learning in astronomy."
 linestretch: 1.25
 papersize: "a4"
@@ -10,6 +13,10 @@ numbersections: true
 geometry: "left=3cm,right=3cm,top=3cm,bottom=3cm"
 fontsize: 12pt
 ---
+
+\newpage
+
+*I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation. I would also like to thank my co-supervisor, Emmanuel Bratsolis, for his guidance and support throughout the dissertation.*
 
 \newpage
 
@@ -460,33 +467,43 @@ This research contributes to the field of astronomy and machine learning by show
 
 In closing, this work serves as a foundation for further exploration into machine learning applications in astrophysics. Future endeavors could explore methods for mitigating the model's bias and bad performance in higher redshift ranges and investigate the integration of additional data sources to increase predictive accuracy.
 
-# Appendix
+\newpage
 
-## Code
+# Appendix{.unlisted .unnumbered}
 
-The code for this dissertation can be found in the following GitHub repository: <https://github.com/kiraleos/dissertation>
+## Sources{.unlisted .unnumbered}
 
-## Bibliography
+### Books{.unlisted .unnumbered}
+
+1. Francois Chollet. Deep Learning with Python. Manning Publications. 2017
+2. Michael A. Nielsen. Neural networks and Deep Learning. Determination Press. 2015
+
+### Papers{.unlisted .unnumbered}
+
+1. Adam: A Method for Stochastic Optimization. arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
+2. Phung, & Rhee,. (2019). A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Applied Sciences. 9. 4500. 10.3390/app9214500.
+3. Bergstra, James & Bengio, Y.. (2012). Random Search for Hyper-Parameter Optimization. The Journal of Machine Learning Research. 13. 281-305.
+4. Sequential model-based optimization for general algorithm configuration. Learning and Intelligent Optimization. Lecture Notes in Computer Science. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
+
+### Website sources{.unlisted .unnumbered}
 
 1. Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
-1. What do redshifts tell astronomers. EarthSky. October 4 2023. <https://earthsky.org/astronomy-essentials/what-is-a-redshift/>
-1. Francois Chollet. Deep Learning with Python. Manning Publications. 2017
-1. What is Gradient Descent?. IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
-1. Why Data should be Normalized before Training a Neural Network. Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
-1. Stochastic Gradient Descent (SGD). GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
-1. Adam: A Method for Stochastic Optimization. arXiv. September 27 2023. <https://arxiv.org/abs/1412.6980>
-1. Rectified Linear Units (ReLU) in Deep Learning. Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
-1. Activation Functions in Neural Networks. Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
-1. How to Control the Stability of Training Neural Networks With the Batch Size. Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
-1. Phung, & Rhee,. (2019). A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Applied Sciences. 9. 4500. 10.3390/app9214500.
-1. Michael A. Nielsen. Neural networks and Deep Learning. Determination Press. 2015
-1. Jason Brownlee. A Gentle Introduction to the Rectified Linear Unit (ReLU). Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
-1. René Andrae. Sampled Mean Spectrum generator (SMSgen). Gaia Archive. September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_smsgen.html>
-1. Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
-1. Random Search for Hyper-Parameter Optimization. Journal of Machine Learning Research. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
-1. Sequential model-based optimization for general algorithm configuration. Learning and Intelligent Optimization. Lecture Notes in Computer Science. <https://www.cs.ubc.ca/labs/algorithms/Projects/SMAC/papers/11-LION5-SMAC.pdf>
-1. Overfitting and Underfitting With Machine Learning Algorithms. Machine Learning Mastery. October 6 2023. <https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/>
-1. The Challenge of Vanishing/Exploding Gradients in Deep Neural Networks. Analytics Vidhya. October 6 2023. <https://www.analyticsvidhya.com/blog/2021/06/the-challenge-of-vanishing-exploding-gradients-in-deep-neural-networks/>
+2. What do redshifts tell astronomers. EarthSky. October 4 2023. <https://earthsky.org/astronomy-essentials/what-is-a-redshift/>
+3. What is Gradient Descent?. IBM. September 27 2023. <https://www.ibm.com/topics/gradient-descent>
+4. Why Data should be Normalized before Training a Neural Network. Towards Data Science. September 26 2023. <https://towardsdatascience.com/why-data-should-be-normalized-before-training-a-neural-network-c626b7f66c7d>
+5. Stochastic Gradient Descent (SGD). GeeksForGeeks. September 27 2023. <https://www.geeksforgeeks.org/ml-stochastic-gradient-descent-sgd/>
+6. Rectified Linear Units (ReLU) in Deep Learning. Kaggle. September 27 2023. <https://www.kaggle.com/code/dansbecker/rectified-linear-units-relu-in-deep-learning>
+7. Activation Functions in Neural Networks. Towards Data Science. September 27 2023. <https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6>
+8. How to Control the Stability of Training Neural Networks With the Batch Size. Machine Learning Mastery. September 27 2023. <https://machinelearningmastery.com/how-to-control-the-speed-and-stability-of-training-neural-networks-with-gradient-descent-batch-size/>
+9. Jason Brownlee. A Gentle Introduction to the Rectified Linear Unit (ReLU). Machine Learning Mastery. September 28 2023. <https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks>
+10. René Andrae. Sampled Mean Spectrum generator (SMSgen). Gaia Archive. September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_smsgen.html>
+11. Bellas-Velidis & Hatzidimitriou. Unresolved Galaxy Classifier (UGC). September 30 2023. <https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_ugc.html>
+12. Overfitting and Underfitting With Machine Learning Algorithms. Machine Learning Mastery. October 6 2023. <https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/>
+13. The Challenge of Vanishing/Exploding Gradients in Deep Neural Networks. Analytics Vidhya. October 6 2023. <https://www.analyticsvidhya.com/blog/2021/06/the-challenge-of-vanishing-exploding-gradients-in-deep-neural-networks/>
+
+## Code{.unlisted .unnumbered}
+
+The code for this dissertation can be found in the following GitHub repository: <https://github.com/kiraleos/dissertation>
 
 ------------------------------------------------------------------------
 [^gaia_overview]: Gaia Overview. ESA. September 26 2023. <https://www.esa.int/Science_Exploration/Space_Science/Gaia/Gaia_overview>
