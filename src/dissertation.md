@@ -6,15 +6,18 @@ author:
     - "Supervisor: Nikolaos Vasilas"
     - "Co-Supervisor: Emmanuel Bratsolis"
 abstract: "Galaxy redshift is a crucial parameter in astronomy that provides information on the distance, age, and evolution of galaxies. This dissertation investigates the application of machine learning for predicting galaxy redshifts. It involves the development and training of a neural network to analyze galaxy spectra sourced from the European Space Agency's Gaia mission and showcases the practical implementation of machine learning in astronomy."
-linestretch: 1.25
+linestretch: 1.15
 papersize: "a4"
 indent: true
 numbersections: true
-geometry: "left=3cm,right=3cm,top=3cm,bottom=3cm"
-fontsize: 12pt
+geometry: "left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm"
+fontsize: 11pt
+fontfamily: "times"
 ---
 
-\newpage
+\setcounter{page}{11}
+
+<!-- \newpage -->
 
 <!-- *I would like to thank Ioannis Bellas-Velidis and Despina Hatzidimitriou for providing us with the dataset and their guidance throughout the dissertation.* -->
 
@@ -59,6 +62,8 @@ The subsequent chapters of this dissertation are organized as follows:
 4. **Methodology**: Elaborates on the methodologies used for CNN model training and evaluation.
 5. **Results**: Presents the findings of our experiments, assesses model performance, and discusses implications.
 6. **Conclusion**: Summarizes key takeaways and outlines potential areas for future research.
+
+\newpage
 
 # Background
 
@@ -248,6 +253,8 @@ Conversely, exploding gradients occur when gradients become exceedingly large. T
 
 Several strategies have been proposed to address vanishing and exploding gradients. Weight initialization techniques, such as Xavier (Glorot) initialization, are designed to ensure proper scaling of weights, helping to alleviate the vanishing gradient problem. Gradient clipping, which involves bounding gradients during training, prevents them from reaching extremely high values, mitigating the issue of exploding gradients. Additionally, the use of activation functions with derivatives that do not approach zero or infinity, such as the Rectified Linear Unit (ReLU), has become prevalent in deep neural networks, offering some resilience against vanishing and exploding gradients.[^vanishing_gradients]
 
+\newpage
+
 # Data Preparation
 
 ## Source & Composition
@@ -310,6 +317,8 @@ Data is typically split into three sets: a training set, a validation set, and a
 Our dataset was first split into a training and a test set. The training set contained 90% of the data, while the test set contained the remaining 10%. Then of the training set, 30% was used as a validation set. This resulted in a training set of 63% of the data, a validation set of 27% of the data, and a test set of 10% of the data.
 
 ![Data split](./figures/data_split.png){width=100%}
+
+\newpage
 
 # Methodology
 
@@ -385,6 +394,8 @@ This figure shows the Mean Absolute Error (MAE) of the training and validation s
 
 The training loss seems to converge to a value of approximately 0.021 after 20 epochs. The validation loss is also exactly the same, which means that the model performs equally well on the training and validation sets. This is a good sign, as it means that the model generalizes well to unseen data.
 
+\newpage
+
 # Results & Discussion
 
 Next we will discuss the results of the model and its performance on the test set by analyzing its performance on the different redshift ranges through looking at different figures and metrics.
@@ -453,6 +464,8 @@ We can also see the model's negative bias in the upper redshift ranges as the po
 
 This concludes the results and discussion chapter. Next we will look at the conclusions of this dissertation.
 
+\newpage
+
 # Conclusions
 
 In this dissertation, we trained and evaluated a Convolutional Neural Network that predicts galaxy redshifts. This work leveraged the dataset generously provided by Ioannis Bellas-Velidis and Despina Hatzidimitriou who worked on Gaia's Unresolved Galaxy Classifier (UGC).
@@ -518,6 +531,136 @@ import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, QuantileTransformer
 from sklearn.model_selection import train_test_split
 
+HIST_BIN_SCALE = 100
+plt.hist(
+  redshifts,
+  bins=np.linspace(min(redshifts), max(redshifts), HIST_BIN_SCALE),
+  edgecolor='black',
+  alpha=1,
+  color='grey'
+)
+plt.xlabel('Redshift')
+plt.ylabel('Number of Galaxies')
+plt.title('Distribution of Redshifts')
+
+plt.savefig('../figures/redshift_distribution.png')
+
+plt.show()
+
+percentile_values = [25, 50, 75, 90, 95, 99]
+percentiles = np.percentile(redshifts, percentile_values)
+
+plt.figure(figsize=(10, 5))
+redshifts_sorted = np.sort(redshifts)
+cumulative_curve = np.arange(1, len(redshifts_sorted) + 1) / len(redshifts_sorted)
+plt.plot(redshifts_sorted, cumulative_curve, color='grey', label='Cumulative Curve')
+
+plt.xlabel('Redshift')
+plt.ylabel('Cumulative Probability')
+plt.title('Cumulative Curve of Redshifts')
+
+
+line_colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple']
+i = 0
+x_ticks = []
+for percentile in percentiles:
+    plt.axvline(percentile, color=line_colors[i], linestyle='--', label=f'{percentile_values[i]}th')
+    x_ticks.append(percentile.round(2))
+    i += 1
+
+plt.xlabel('Redshift')
+plt.ylabel('Cumulative Probability')
+plt.title('Cumulative Curve of Redshifts')
+plt.legend()
+
+plt.xticks(x_ticks)
+plt.show()
+
+print('Mean, median and Standard Deviation:')
+print('  Mean:    ', np.mean(redshifts).round(3))
+print('  Median:  ', np.median(redshifts).round(3))
+print('  Std Dev: ', np.std(redshifts).round(3))
+
+print('Skewness and Kurtosis:')
+print('  Skewness: ', pd.Series(redshifts).skew())
+print('  Kurtosis: ', pd.Series(redshifts).kurt())
+
+random_samples = data.sample(n=1)
+
+grayscale_colors = ['0', '0.2', '0.4', '0.6', '0.8']
+
+plt.figure(figsize=(10, 5))
+i = 0
+for index, row in random_samples.iterrows():
+    plt.plot(row.index[1:], row.values[1:], label=f'Galaxy #{index}, z = {row.values[0]}', color=grayscale_colors[i])
+    i += 1
+
+plt.xticks([])
+plt.yticks([])
+plt.xlabel('Wavelength (366nm to 996nm)')
+plt.ylabel('Flux')
+plt.title('Galaxy Spectra')
+plt.legend()
+
+plt.savefig('../figures/galaxy_spectra.png')
+plt.show()
+
+redshift_ranges = [(0, 0.1), (0.1, 0.2), (0.2, 0.3), (0.3, 0.4), (0.4, 0.5), (0.5, 0.6)]
+num_samples_per_range = 1000
+average_flux_per_range = []
+
+for start, end in redshift_ranges:
+    filtered_indices = np.where((redshifts >= start) & (redshifts < end))[0]
+    
+    if len(filtered_indices) >= num_samples_per_range:
+        selected_indices = np.random.choice(filtered_indices, num_samples_per_range, replace=False)
+    else:
+        selected_indices = filtered_indices
+    
+    average_flux = np.mean(spectra[selected_indices], axis=0)
+    average_flux_per_range.append(average_flux)
+
+average_flux_per_range = np.array(average_flux_per_range)
+
+wavelengths = np.arange(186)
+grayscale_colors = ['0', '0.2', '0.4', '0.5', '0.6', '0.7']
+
+plt.figure(figsize=(10, 6))
+for i, (start, end) in enumerate(redshift_ranges):
+  plt.plot(
+    wavelengths,
+    average_flux_per_range[i],
+    label=f'Redshifts {start}-{end}',
+    color = grayscale_colors[i]
+  )
+plt.xlabel('Wavelength (366nm to 996nm)')
+plt.ylabel('Flux')
+plt.xticks([])
+plt.yticks([])
+plt.title('Average Flux for Different Redshift Ranges')
+plt.legend()
+
+plt.savefig('../figures/average_flux.png')
+plt.show()
+
+redshift_ranges = np.arange(0, 0.6, 0.05)
+percentages = []
+for i in range(len(redshift_ranges)):
+    start = redshift_ranges[i]
+    if i == len(redshift_ranges) - 1: end = redshift_ranges[i] + 0.05
+    else: end = redshift_ranges[i + 1]
+    filtered_indices = np.where((redshifts >= start) & (redshifts < end))[0]
+    percentages.append(len(filtered_indices) / len(redshifts))
+
+print('Percentage of Data in Each Redshift Range')
+print('| Redshift Range | Percentage |')
+print('|----------------|------------|')
+for i in range(len(percentages)):
+    start = redshift_ranges[i]
+    if i == len(redshift_ranges) - 1: end = redshift_ranges[i] + 0.05
+    else: end = redshift_ranges[i + 1]
+    print(f'| {start:.2f}-{end:.2f} | {100 * percentages[i]:.2f} |')
+
 seed_value = 4
 random.seed(seed_value)
 np.random.seed(seed_value)
@@ -553,9 +696,9 @@ model = tf.keras.Sequential([
 
 model.compile(optimizer='adamax', loss='huber', metrics=['mean_absolute_error'])
 
-batch_size = 16 # 16
-epochs = 40 # 30
-validation_split = 0.3 # 0.3
+batch_size = 16
+epochs = 20
+validation_split = 0.3
 history = model.fit(spectra_train, redshift_train, epochs=epochs, batch_size=batch_size, validation_split=validation_split)
 
 history_df = pd.DataFrame(history.history)
