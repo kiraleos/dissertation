@@ -289,13 +289,6 @@ math: mathjax
 
 ---
 
-## Σύγκριση με το SVM του Unresolved Galaxy Classifier - UGC
-
-![bg right w:630](../figures/errorbars_0.5_bins.png)
-![bg right w:630](../figures/hlines_0.5_bins.png)
-
----
-
 ## Οπτική ανάλυση - Ιστόγραμμα
 
 - Προβλέψεις του μοντέλου σε σχέση με τις πραγματικές τιμές
@@ -313,6 +306,20 @@ math: mathjax
 - Αρνητικό bias εμφανές στις ανώτερες περιοχές redshift
 
 ![bg right w:650](../figures/hist2d_inferno.png)
+
+---
+
+## Σύγκριση με το SVM του Unresolved Galaxy Classifier - UGC
+
+---
+
+![bg w:600](../figures/hlines_0.5_bins.png)
+![bg w:630](../figures/mae_std_svmpng.png)
+
+---
+
+![bg vertical h:400](../figures/hist2d_jet.png)
+![bg vertical h:400](../figures/svm_histograms.png)
 
 ---
 
